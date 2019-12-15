@@ -29,4 +29,4 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: SonarCloud Scan
-        run: mvn verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
