@@ -1,6 +1,7 @@
 package com.wkrzywiec.medium.noticeboard.entity;
 
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Data
+@SuperBuilder
 public class Board extends BaseEntity {
 
     @Column

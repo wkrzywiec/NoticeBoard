@@ -1,6 +1,7 @@
 package com.wkrzywiec.medium.noticeboard.entity;
 
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Data
+@SuperBuilder
 public class Person extends BaseEntity {
 
     @Column(name = "first_name")

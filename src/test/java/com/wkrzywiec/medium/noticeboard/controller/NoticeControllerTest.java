@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -41,9 +40,11 @@ public class NoticeControllerTest {
         when(noticeService.findAll())
                 .thenReturn(Collections.emptyList());
 
+        // when
         mockMvc.perform(
                 get("/notices/")
         )
+                // then
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
