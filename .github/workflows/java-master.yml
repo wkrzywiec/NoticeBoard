@@ -21,3 +21,12 @@ jobs:
         run: mvn clean compile -DskipTests
       - name: Maven Verify
         run: mvn clean verify
+
+  sonar:
+    name: SonarCloud Scan
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: SonarCloud Scan
+        run: mvn verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
