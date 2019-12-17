@@ -15,9 +15,10 @@ import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
-public class NoticeBoardITCase {
+public class NoticeRepositoryITCase {
 
     @Autowired
     private NoticeRepository noticeRepository;
@@ -31,7 +32,7 @@ public class NoticeBoardITCase {
 
         entityManager.persist(singleNotice(11L));
         entityManager.flush();
-        Notice savedNotice = (Notice) entityManager.createNativeQuery("SELECT Notice.* FROM Notice", Notice.class).getSingleResult();
+        Notice savedNotice = getSingleNoticeSavedInDb();
 
         //when
         Optional<Notice> optionalNotice = noticeRepository.findById(savedNotice.getId());
@@ -61,10 +62,30 @@ public class NoticeBoardITCase {
         assertEquals(3, noticeList.size());
     }
 
-    private Notice singleNotice(Long id){
+    @Test
+    public void givenSingleNotice_whenSave_thenNoticeIsSaved() {
+        //given
+        Notice notice = singleNotice(1L);
+
+        //when
+        noticeRepository.save(notice);
+
+        //then
+        Notice savedNotice = getSingleNoticeSavedInDb();
+        assertNotNull(savedNotice.getId());
+        assertEquals("Notice 1", savedNotice.getTitle());
+    }
+
+    private Notice singleNotice(Long number){
         return Notice.builder()
-                .title("Notice " + id)
-                .description("Notice description " + id)
+                .title("Notice " + number)
+                .description("Notice description " + number)
                 .build();
+    }
+
+    private Notice getSingleNoticeSavedInDb() {
+        return (Notice) entityManager
+                .createNativeQuery("SELECT Notice.* FROM Notice", Notice.class)
+                .getSingleResult();
     }
 }
