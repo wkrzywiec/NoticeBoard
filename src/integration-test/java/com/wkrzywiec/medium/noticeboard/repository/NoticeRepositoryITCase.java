@@ -1,7 +1,6 @@
-package com.wkrzywiec.medium.noticeboard;
+package com.wkrzywiec.medium.noticeboard.repository;
 
 import com.wkrzywiec.medium.noticeboard.entity.Notice;
-import com.wkrzywiec.medium.noticeboard.repository.NoticeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -92,6 +91,25 @@ public class NoticeRepositoryITCase {
         Notice savedNotice = getNoticeResultListSavedInDb().get(0);
         assertNotNull(savedNotice.getId());
         assertEquals("Notice 1", savedNotice.getTitle());
+    }
+
+    @Test
+    public void given2SavedNotices_whenDeleteById_thenOnlyOneNoticeInDb() {
+        //given
+        entityManager.persist(singleNotice(1L));
+        entityManager.persist(singleNotice(2L));
+        entityManager.flush();
+
+        Notice deletedNotice = getNoticeResultListSavedInDb().get(0);
+
+        //when
+        noticeRepository.deleteById(deletedNotice.getId());
+
+        //then
+        List<Notice> noticeList = getNoticeResultListSavedInDb();
+
+        assertEquals(1, noticeList.size());
+        assertFalse(deletedNotice.getId().equals(noticeList.get(0).getId()));
     }
 
     private Notice singleNotice(Long number){
