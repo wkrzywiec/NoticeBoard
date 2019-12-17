@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 public class NoticeRepositoryITCase {
@@ -32,7 +33,7 @@ public class NoticeRepositoryITCase {
 
         entityManager.persist(singleNotice(11L));
         entityManager.flush();
-        Notice savedNotice = getSingleNoticeSavedInDb();
+        Notice savedNotice = getNoticeResultListSavedInDb().get(0);
 
         //when
         Optional<Notice> optionalNotice = noticeRepository.findById(savedNotice.getId());
@@ -63,6 +64,23 @@ public class NoticeRepositoryITCase {
     }
 
     @Test
+    public void given2Notices_whenFindById_thenGetSingleNotice() {
+        //given
+        entityManager.persist(singleNotice(1L));
+        entityManager.persist(singleNotice(2L));
+        entityManager.flush();
+
+        Notice savedNotice = getNoticeResultListSavedInDb().get(0);
+
+        //when
+        Optional<Notice> optNotice = noticeRepository.findById(savedNotice.getId());
+
+        //then
+        assertTrue(optNotice.isPresent());
+        assertNotNull(optNotice.get().getId());
+    }
+
+    @Test
     public void givenSingleNotice_whenSave_thenNoticeIsSaved() {
         //given
         Notice notice = singleNotice(1L);
@@ -71,7 +89,7 @@ public class NoticeRepositoryITCase {
         noticeRepository.save(notice);
 
         //then
-        Notice savedNotice = getSingleNoticeSavedInDb();
+        Notice savedNotice = getNoticeResultListSavedInDb().get(0);
         assertNotNull(savedNotice.getId());
         assertEquals("Notice 1", savedNotice.getTitle());
     }
@@ -83,9 +101,9 @@ public class NoticeRepositoryITCase {
                 .build();
     }
 
-    private Notice getSingleNoticeSavedInDb() {
-        return (Notice) entityManager
+    private List<Notice> getNoticeResultListSavedInDb() {
+        return entityManager
                 .createNativeQuery("SELECT Notice.* FROM Notice", Notice.class)
-                .getSingleResult();
+                .getResultList();
     }
 }
