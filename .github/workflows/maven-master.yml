@@ -1,4 +1,4 @@
-name: Java Master
+name: Maven Master
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
 
 jobs:
 
-  unit-test:
-    name: Maven Compile
+  test:
+    name: Test (Unit & Integration)
     runs-on: ubuntu-18.04
 
     steps:
@@ -17,10 +17,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
-      - name: Maven Compile
-        run: mvn clean compile -DskipTests
+      - name: Maven Package
+        run: mvn clean package -DskipTests
       - name: Maven Verify
-        run: mvn clean verify
+        run: mvn clean verify -Pintegration-test
 
   sonar:
     name: SonarCloud Scan
@@ -29,4 +29,4 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: SonarCloud Scan
-        run: mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn clean verify -Pintegration-test -Dsonar.login=${{ secrets.SONAR_TOKEN }}
