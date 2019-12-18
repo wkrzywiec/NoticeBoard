@@ -11,10 +11,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -65,6 +69,34 @@ public class NoticeServiceTest {
 
         //then
         assertEquals(500, noticeList.size());
+    }
+
+    @Test
+    public void givenSingleNotice_whenFindById_thenGetSingleNotice(){
+        //given
+        when(noticeRepository.findById(any(Long.class)))
+                .thenReturn(Optional.of(singleNotice(1L)));
+
+        //when
+        NoticeDTO noticeDTO = noticeService.findById(1L);
+
+        //then
+        assertNotNull(noticeDTO);
+        assertEquals("Notice 1", noticeDTO.getTitle());
+        assertEquals("Notice description 1", noticeDTO.getDescription());
+    }
+
+    @Test
+    public void givenNoNotice_whenFindById_thenGetNull(){
+        //given
+        when(noticeRepository.findById(any(Long.class)))
+                .thenReturn(Optional.empty());
+
+        //when
+        NoticeDTO noticeDTO = noticeService.findById(1L);
+
+        //then
+        assertNull(noticeDTO);
     }
 
     private Notice singleNotice(Long id){

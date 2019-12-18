@@ -6,13 +6,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -39,6 +39,43 @@ public class NoticeServiceITCase {
 
         //then
         assertEquals(3, noticeList.size());
+    }
+
+    @Test
+    @Transactional
+    public void given3NoticesInDb_whenFindById_thenGetSingleNotice() {
+        //given
+        entityManager.persist(singleNotice(1L));
+        entityManager.persist(singleNotice(2L));
+        entityManager.persist(singleNotice(3L));
+        entityManager.flush();
+
+        Notice savedNotice = getNoticeResultListSavedInDb().get(0);
+
+
+        //when
+        NoticeDTO noticeDTO = noticeService.findById(savedNotice.getId());
+
+        //then
+        assertEquals(savedNotice.getId(), noticeDTO.getId());
+        assertEquals(savedNotice.getTitle(), noticeDTO.getTitle());
+        assertEquals(savedNotice.getDescription(), noticeDTO.getDescription());
+    }
+
+    @Test
+    @Transactional
+    public void given3NoticesInDb_whenFindById_thenGetNull() {
+        //given
+        entityManager.persist(singleNotice(1L));
+        entityManager.persist(singleNotice(2L));
+        entityManager.persist(singleNotice(3L));
+        entityManager.flush();
+
+        //when
+        NoticeDTO noticeDTO = noticeService.findById(5000L);
+
+        //then
+        assertNull(noticeDTO);
     }
 
     private Notice singleNotice(Long number){
