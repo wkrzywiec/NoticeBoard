@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -67,7 +68,23 @@ public class NoticeControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("[0].title").value("Notice 1"))
                 .andExpect(jsonPath("[0].description").value("Notice description 1"));
+    }
 
+    @Test
+    public void givenNoticeId_whenGETNoticesById_thenGetSingleNotice() throws Exception {
+        //given
+        when(noticeService.findById(any(Long.class)))
+                .thenReturn(singleNotice(1));
+
+        //when & then
+        mockMvc.perform(
+                get("/notices/1")
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.title").value("Notice 1"))
+                .andExpect(jsonPath("$.description").value("Notice description 1"));
     }
 
     private NoticeDTO singleNotice(int id){
