@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -78,6 +79,21 @@ public class NoticeServiceITCase {
         assertNull(noticeDTO);
     }
 
+    @Test
+    @Transactional
+    public void givenNotice_whenSave_thenGetSavedNotice() {
+        //given
+        NoticeDTO notice = singleNoticeDTO(1L);
+
+        //when
+        NoticeDTO savedNotice = noticeService.save(notice);
+
+        //then
+        assertNotNull(savedNotice.getId());
+        assertEquals(notice.getTitle(), savedNotice.getTitle());
+        assertEquals(notice.getDescription(), savedNotice.getDescription());
+    }
+
     private Notice singleNotice(Long number){
         return Notice.builder()
                 .title("Notice " + number)
@@ -89,5 +105,12 @@ public class NoticeServiceITCase {
         return entityManager
                 .createNativeQuery("SELECT Notice.* FROM Notice", Notice.class)
                 .getResultList();
+    }
+
+    private NoticeDTO singleNoticeDTO(Long number){
+        return NoticeDTO.builder()
+                .title("Notice " + number)
+                .description("Notice description " + number)
+                .build();
     }
 }

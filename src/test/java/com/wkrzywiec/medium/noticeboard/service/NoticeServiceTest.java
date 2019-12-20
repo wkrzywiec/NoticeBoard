@@ -99,6 +99,21 @@ public class NoticeServiceTest {
         assertNull(noticeDTO);
     }
 
+    @Test
+    public void givenNotice_whenSave_thenGetSavedNotice() {
+        //given
+        when(noticeRepository.save(any(Notice.class)))
+                .thenReturn(singleNotice(1L));
+
+        NoticeDTO noticeDTO = singleNoticeDTO(1L);
+
+        //when
+        NoticeDTO savedNotice = noticeService.save(noticeDTO);
+
+        //then
+        assertNotNull(savedNotice.getId());
+    }
+
     private Notice singleNotice(Long id){
         return Notice.builder()
                 .id(id)
@@ -111,5 +126,12 @@ public class NoticeServiceTest {
         return LongStream.rangeClosed(1, noticesCount)
                 .mapToObj(id -> singleNotice(id))
                 .collect(Collectors.toList());
+    }
+
+    private NoticeDTO singleNoticeDTO(Long id){
+        return NoticeDTO.builder()
+                .title("Notice " + id)
+                .description("Notice description " + id)
+                .build();
     }
 }

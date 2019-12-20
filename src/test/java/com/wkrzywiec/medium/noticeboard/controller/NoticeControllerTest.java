@@ -1,7 +1,9 @@
 package com.wkrzywiec.medium.noticeboard.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
 import com.wkrzywiec.medium.noticeboard.service.NoticeService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import java.util.stream.IntStream;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -96,6 +99,22 @@ public class NoticeControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    @Ignore
+    public void givenNotice_whenPOSTSave_thenGetSavedNotice() throws Exception {
+        //given
+        NoticeDTO noticeDTO = singleNotice(1);
+
+        //when
+        mockMvc.perform(
+                post("/notices/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(noticeDTO))
+        )
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
     private NoticeDTO singleNotice(int id){
         return NoticeDTO.builder()
                 .id(Long.valueOf(id))
@@ -108,5 +127,15 @@ public class NoticeControllerTest {
         return IntStream.rangeClosed(1, noticesCount)
                 .mapToObj(id -> singleNotice(id))
                 .collect(Collectors.toList());
+    }
+
+    private String asJsonString(Object object){
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            final String jsonContent = mapper.writeValueAsString(object);
+            return jsonContent;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

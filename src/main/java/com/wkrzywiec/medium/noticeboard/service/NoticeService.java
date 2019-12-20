@@ -32,7 +32,11 @@ public class NoticeService {
         } else {
             return null;
         }
+    }
 
+    public NoticeDTO save(NoticeDTO noticeDTO) {
+        Notice notice = NoticeMapper.INSTANCE.noticeDTOToNotice(noticeDTO);
+        return NoticeMapper.INSTANCE.noticeToNoticeDTO(noticeRepository.save(notice));
     }
 
 }
