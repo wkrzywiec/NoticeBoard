@@ -3,7 +3,6 @@ package com.wkrzywiec.medium.noticeboard.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
 import com.wkrzywiec.medium.noticeboard.service.NoticeService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,17 +99,20 @@ public class NoticeControllerTest {
     }
 
     @Test
-    @Ignore
     public void givenNotice_whenPOSTSave_thenGetSavedNotice() throws Exception {
         //given
         NoticeDTO noticeDTO = singleNotice(1);
+        noticeDTO.setId(null);
 
         //when
         mockMvc.perform(
                 post("/notices/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(noticeDTO))
+                .characterEncoding("utf-8")
+
         )
+
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
@@ -131,9 +133,7 @@ public class NoticeControllerTest {
 
     private String asJsonString(Object object){
         try {
-            final ObjectMapper mapper = new ObjectMapper();
-            final String jsonContent = mapper.writeValueAsString(object);
-            return jsonContent;
+            return new ObjectMapper().writeValueAsString(object);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
