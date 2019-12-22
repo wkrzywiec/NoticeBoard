@@ -1,6 +1,8 @@
 package com.wkrzywiec.medium.noticeboard.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,8 @@ import java.util.Date;
 @MappedSuperclass
 @SuperBuilder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class BaseEntity {
 
     @Id
