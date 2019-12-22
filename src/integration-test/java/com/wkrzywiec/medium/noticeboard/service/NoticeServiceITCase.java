@@ -102,9 +102,10 @@ public class NoticeServiceITCase {
         entityManager.persist(singleNotice(2L));
         entityManager.persist(singleNotice(3L));
         entityManager.flush();
+        Notice savedNotice = getNoticeResultListSavedInDb().get(0);
 
         //when
-        noticeService.delete(1L);
+        noticeService.delete(savedNotice.getId());
 
         //then
         List<Notice> noticeDTOList = getNoticeResultListSavedInDb();
@@ -117,16 +118,17 @@ public class NoticeServiceITCase {
         //given
         entityManager.persist(singleNotice(1L));
         entityManager.flush();
+        Notice savedNotice = getNoticeResultListSavedInDb().get(0);
 
         NoticeDTO toUpdateNoticeDTO = singleNoticeDTO(2L);
 
         //when
-        NoticeDTO updatedNoticeDTO = noticeService.update(1L, toUpdateNoticeDTO);
+        NoticeDTO updatedNoticeDTO = noticeService.update(savedNotice.getId(), toUpdateNoticeDTO);
 
         //then
         assertEquals(toUpdateNoticeDTO.getTitle(), updatedNoticeDTO.getTitle());
         assertEquals(toUpdateNoticeDTO.getDescription(), updatedNoticeDTO.getDescription());
-        assertEquals(1L, updatedNoticeDTO.getId());
+        assertEquals(savedNotice.getId(), updatedNoticeDTO.getId());
     }
 
     private Notice singleNotice(Long number){
