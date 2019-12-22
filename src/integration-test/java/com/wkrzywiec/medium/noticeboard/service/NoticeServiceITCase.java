@@ -111,6 +111,24 @@ public class NoticeServiceITCase {
         assertEquals(2, noticeDTOList.size());
     }
 
+    @Test
+    @Transactional
+    public void givenSavedNoticeInDb_whenUpdate_thenNoticeIsUpdated() {
+        //given
+        entityManager.persist(singleNotice(1L));
+        entityManager.flush();
+
+        NoticeDTO toUpdateNoticeDTO = singleNoticeDTO(2L);
+
+        //when
+        NoticeDTO updatedNoticeDTO = noticeService.update(1L, toUpdateNoticeDTO);
+
+        //then
+        assertEquals(toUpdateNoticeDTO.getTitle(), updatedNoticeDTO.getTitle());
+        assertEquals(toUpdateNoticeDTO.getDescription(), updatedNoticeDTO.getDescription());
+        assertEquals(1L, updatedNoticeDTO.getId());
+    }
+
     private Notice singleNotice(Long number){
         return Notice.builder()
                 .title("Notice " + number)

@@ -115,6 +115,25 @@ public class NoticeServiceTest {
         assertNotNull(savedNotice.getId());
     }
 
+    @Test
+    public void givenSavedNotice_whenUpdate_thenNoticeIsUpdated() {
+        //given
+        when(noticeRepository.findById(any(Long.class)))
+                .thenReturn(Optional.of(singleNotice(1L)));
+
+        when(noticeRepository.save(any(Notice.class)))
+                .thenReturn(singleNotice(2L));
+
+        NoticeDTO afterUpdeNoticeDTO = singleNoticeDTO(2L);
+
+        //when
+        NoticeDTO updatedNoticeDTO = noticeService.update(1L, afterUpdeNoticeDTO);
+
+        //then
+        assertEquals(afterUpdeNoticeDTO.getTitle(), updatedNoticeDTO.getTitle());
+        assertEquals(afterUpdeNoticeDTO.getDescription(), updatedNoticeDTO.getDescription());
+    }
+
     private Notice singleNotice(Long id){
         return Notice.builder()
                 .id(id)
