@@ -34,3 +34,5 @@ jobs:
           java-version: 11.0.4
       - name: SonarCloud Scan
         run: mvn clean verify -Pintegration-test,sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
