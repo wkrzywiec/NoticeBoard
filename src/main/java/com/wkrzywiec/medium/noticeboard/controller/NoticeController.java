@@ -4,6 +4,7 @@ import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
 import com.wkrzywiec.medium.noticeboard.service.NoticeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,5 +37,11 @@ public class NoticeController {
     @PostMapping("/")
     public ResponseEntity<NoticeDTO> saveNotice(@RequestBody NoticeDTO notice) {
         return new ResponseEntity<>(noticeService.save(notice), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        noticeService.delete(id);
+        return new ResponseEntity<>("No Content", HttpStatus.NO_CONTENT);
     }
 }

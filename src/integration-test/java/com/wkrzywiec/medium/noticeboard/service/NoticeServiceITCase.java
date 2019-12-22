@@ -94,6 +94,23 @@ public class NoticeServiceITCase {
         assertEquals(notice.getDescription(), savedNotice.getDescription());
     }
 
+    @Test
+    @Transactional
+    public void given3NoticesInDb_whenDeleteById_thenGet2Notices() {
+        //given
+        entityManager.persist(singleNotice(1L));
+        entityManager.persist(singleNotice(2L));
+        entityManager.persist(singleNotice(3L));
+        entityManager.flush();
+
+        //when
+        noticeService.delete(1L);
+
+        //then
+        List<Notice> noticeDTOList = getNoticeResultListSavedInDb();
+        assertEquals(2, noticeDTOList.size());
+    }
+
     private Notice singleNotice(Long number){
         return Notice.builder()
                 .title("Notice " + number)
