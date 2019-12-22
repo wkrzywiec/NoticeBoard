@@ -11,10 +11,15 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -67,6 +72,68 @@ public class NoticeServiceTest {
         assertEquals(500, noticeList.size());
     }
 
+    @Test
+    public void givenSingleNotice_whenFindById_thenGetSingleNotice(){
+        //given
+        when(noticeRepository.findById(any(Long.class)))
+                .thenReturn(Optional.of(singleNotice(1L)));
+
+        //when
+        NoticeDTO noticeDTO = noticeService.findById(1L);
+
+        //then
+        assertNotNull(noticeDTO);
+        assertEquals("Notice 1", noticeDTO.getTitle());
+        assertEquals("Notice description 1", noticeDTO.getDescription());
+    }
+
+    @Test
+    public void givenNoNotice_whenFindById_thenGetNull(){
+        //given
+        when(noticeRepository.findById(any(Long.class)))
+                .thenReturn(Optional.empty());
+
+        //when
+        NoticeDTO noticeDTO = noticeService.findById(1L);
+
+        //then
+        assertNull(noticeDTO);
+    }
+
+    @Test
+    public void givenNotice_whenSave_thenGetSavedNotice() {
+        //given
+        when(noticeRepository.save(any(Notice.class)))
+                .thenReturn(singleNotice(1L));
+
+        NoticeDTO noticeDTO = singleNoticeDTO(1L);
+
+        //when
+        NoticeDTO savedNotice = noticeService.save(noticeDTO);
+
+        //then
+        assertNotNull(savedNotice.getId());
+    }
+
+    @Test
+    public void givenSavedNotice_whenUpdate_thenNoticeIsUpdated() {
+        //given
+        when(noticeRepository.findById(any(Long.class)))
+                .thenReturn(Optional.of(singleNotice(1L)));
+
+        when(noticeRepository.save(any(Notice.class)))
+                .thenReturn(singleNotice(2L));
+
+        NoticeDTO afterUpdeNoticeDTO = singleNoticeDTO(2L);
+
+        //when
+        NoticeDTO updatedNoticeDTO = noticeService.update(1L, afterUpdeNoticeDTO);
+
+        //then
+        assertEquals(afterUpdeNoticeDTO.getTitle(), updatedNoticeDTO.getTitle());
+        assertEquals(afterUpdeNoticeDTO.getDescription(), updatedNoticeDTO.getDescription());
+    }
+
     private Notice singleNotice(Long id){
         return Notice.builder()
                 .id(id)
@@ -79,5 +146,12 @@ public class NoticeServiceTest {
         return LongStream.rangeClosed(1, noticesCount)
                 .mapToObj(id -> singleNotice(id))
                 .collect(Collectors.toList());
+    }
+
+    private NoticeDTO singleNoticeDTO(Long id){
+        return NoticeDTO.builder()
+                .title("Notice " + id)
+                .description("Notice description " + id)
+                .build();
     }
 }

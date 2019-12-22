@@ -10,7 +10,7 @@ public interface NoticeMapper {
 
     NoticeMapper INSTANCE = Mappers.getMapper( NoticeMapper.class);
 
-    NoticeDTO noticeToNoticeDTO(Notice notice);
+    NoticeDTO mapToNoticeDTO(Notice notice);
 
-    Notice noticeDTOToNotice(NoticeDTO noticeDTO);
+    Notice mapToNotice(NoticeDTO noticeDTO);
 }
