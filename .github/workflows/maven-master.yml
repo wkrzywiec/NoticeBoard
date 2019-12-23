@@ -49,4 +49,4 @@ jobs:
         with:
           java-version: 11.0.4
       - name: Publish artifact on GitHub Packages
-        run: mvn deploy -DskipTests -Dregistry=https://maven.pkg.github.com/wkrzywiec -Dtoken=${{ secrets.SONAR_TOKEN }}
+        run: mvn deploy -DskipTests -Dregistry=https://maven.pkg.github.com/wkrzywiec -Dtoken=${{ secrets.GITHUB_TOKEN }}
