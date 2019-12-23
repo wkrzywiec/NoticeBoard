@@ -1,4 +1,4 @@
-name: Maven Feature
+name: Feature Branch
 
 on:
   push:
