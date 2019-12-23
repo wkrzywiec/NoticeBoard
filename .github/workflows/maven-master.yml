@@ -49,6 +49,7 @@ jobs:
         with:
           java-version: 11.0.4
       - name: Publish artifact on GitHub Packages
+        run: mvn deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn deploy
+
