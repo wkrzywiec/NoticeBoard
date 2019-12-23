@@ -51,4 +51,4 @@ jobs:
       - name: Publish artifact on GitHub Packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn deploy -Dtoken=${GITHUB_TOKEN}
+        run: mvn deploy
