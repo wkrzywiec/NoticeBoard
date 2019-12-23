@@ -8,7 +8,7 @@ on:
 jobs:
 
   test:
-    name: Test (Unit & Integration)
+    name: Test - Units & Integrations
     runs-on: ubuntu-18.04
 
     steps:
@@ -23,7 +23,7 @@ jobs:
         run: mvn clean verify -Pintegration-test
 
   sonar:
-    name: SonarCloud Scan
+    name: Test - SonarCloud Scan
     runs-on: ubuntu-18.04
 
     steps:
