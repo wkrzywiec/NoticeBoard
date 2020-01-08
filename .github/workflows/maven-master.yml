@@ -42,6 +42,7 @@ jobs:
     runs-on: ubuntu-18.04
     needs: [test, sonar]
     
+    ## https://github.com/navikt/helse-streams/blob/master/.github/workflows/release.yml
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 11
@@ -49,7 +50,7 @@ jobs:
         with:
           java-version: 11.0.4
       - name: Publish artifact on GitHub Packages
-        run: mvn -B clean deploy -Dregistry=https://maven.pkg.github.com/wkrzywiec/NoticeBoard -Dtoken=$GITHUB_TOKEN -DskipTests
+        run: mvn -B clean deploy -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
