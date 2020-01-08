@@ -49,7 +49,7 @@ jobs:
         with:
           java-version: 11.0.4
       - name: Publish artifact on GitHub Packages
-        run: mvn -Dmaven.wagon.http.pool=false deploy -DskipTests
+        run: mvn -B clean deploy -Dregistry=https://maven.pkg.github.com/wkrzywiec/NoticeBoard -Dtoken=$GITHUB_TOKEN -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
