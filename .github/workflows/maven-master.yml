@@ -41,8 +41,7 @@ jobs:
     name: Publish - GitHub Packages
     runs-on: ubuntu-18.04
     needs: [test, sonar]
-    
-    ## https://github.com/navikt/helse-streams/blob/master/.github/workflows/release.yml
+
     steps:
       - uses: actions/checkout@v1
       - name: Set up JDK 11
