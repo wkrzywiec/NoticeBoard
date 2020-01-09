@@ -137,6 +137,13 @@
 							<goal>prepare-agent-integration</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>report</id>
+						<goals>
+							<goal>report-aggregate</goal>
+						</goals>
+						<phase>verify</phase>
+					</execution>
 				</executions>
 			</plugin>
 
@@ -197,7 +204,7 @@
 				<sonar.projectKey>NoticeBoard</sonar.projectKey>
 				<sonar.organization>wkrzywiec</sonar.organization>
 				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-                <sonar.jacoco.reportPaths>target/jacoco.exec,target/jacoco-it.exec</sonar.jacoco.reportPaths>
+                <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 			</properties>
 			<activation>
 				<activeByDefault>false</activeByDefault>
