@@ -18,9 +18,9 @@ jobs:
         with:
           java-version: 11.0.4
       - name: Maven Package
-        run: mvn clean package -DskipTests
+        run: mvn -B clean package -DskipTests
       - name: Maven Verify
-        run: mvn clean verify -Pintegration-test
+        run: mvn -B clean verify -Pintegration-test
 
   sonar:
     name: Test - SonarCloud Scan
@@ -33,7 +33,7 @@ jobs:
         with:
           java-version: 11.0.4
       - name: SonarCloud Scan
-        run: mvn clean verify -Pintegration-test,sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn -B clean verify -Pintegration-test,sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
