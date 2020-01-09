@@ -130,6 +130,13 @@
 							<goal>report</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>pre-itest</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 
@@ -186,7 +193,6 @@
 			<id>sonar</id>
 			<properties>
 				<sonar.sources>.</sonar.sources>
-				<sonar.tests>src/test/**,src/integration-test/**</sonar.tests>
 				<sonar.inclusions>src/main/java/**,src/main/resources/**</sonar.inclusions>
 				<sonar.projectKey>NoticeBoard</sonar.projectKey>
 				<sonar.organization>wkrzywiec</sonar.organization>
