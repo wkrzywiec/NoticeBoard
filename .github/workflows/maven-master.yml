@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-18.04
     needs: [test, sonar]
     env:
-      SHA8: ${ GITHUB_SHA:8 }
+      SHA8: ${{ GITHUB_SHA:8 }}
       REPO: ${{ secrets.DOCKER_REPO }}
 
     steps:
