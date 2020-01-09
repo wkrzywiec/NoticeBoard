@@ -197,6 +197,7 @@
 				<sonar.projectKey>NoticeBoard</sonar.projectKey>
 				<sonar.organization>wkrzywiec</sonar.organization>
 				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+                <sonar.jacoco.reportPaths>target/jacoco.exec,target/jacoco-it.exec</sonar.jacoco.reportPaths>
 			</properties>
 			<activation>
 				<activeByDefault>false</activeByDefault>
