@@ -58,6 +58,9 @@ jobs:
     name: Publish - Docker Hub
     runs-on: ubuntu-18.04
     needs: [test, sonar]
+    env:
+      SHA8: ${GITHUB_SHA::8}
+
 
     steps:
       - uses: actions/checkout@v1
@@ -68,7 +71,7 @@ jobs:
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }}
       - name: Build Docker image
-        run: docker build -t wkrzywiec/noticeboard:latest .
+        run: docker build -t wkrzywiec/noticeboard:latest -t wkrzywiec/noticeboard:$SHA8 .
       - name: Publish Docker image
         run: docker push wkrzywiec/noticeboard:latest
 
