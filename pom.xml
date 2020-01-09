@@ -186,6 +186,7 @@
 			<id>sonar</id>
 			<properties>
 				<sonar.sources>.</sonar.sources>
+				<sonar.tests>src/test/java/**,src/integration-test/java/**</sonar.tests>
 				<sonar.inclusions>src/main/java/**,src/main/resources/**</sonar.inclusions>
 				<sonar.projectKey>NoticeBoard</sonar.projectKey>
 				<sonar.organization>wkrzywiec</sonar.organization>
