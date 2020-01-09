@@ -12,7 +12,7 @@
 
 	<groupId>com.wkrzywiec.medium</groupId>
 	<artifactId>noticeboard</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<name>noticeboard</name>
 	<description>Notice Board CRUD application</description>
 
