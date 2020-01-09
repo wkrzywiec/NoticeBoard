@@ -12,7 +12,7 @@
 
 	<groupId>com.wkrzywiec.medium</groupId>
 	<artifactId>noticeboard</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5</version>
 	<name>noticeboard</name>
 	<description>Notice Board CRUD application</description>
 
@@ -130,20 +130,6 @@
 							<goal>report</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>pre-itest</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>prepare-agent-integration</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<goals>
-							<goal>report-aggregate</goal>
-						</goals>
-						<phase>verify</phase>
-					</execution>
 				</executions>
 			</plugin>
 
@@ -204,7 +190,6 @@
 				<sonar.projectKey>NoticeBoard</sonar.projectKey>
 				<sonar.organization>wkrzywiec</sonar.organization>
 				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-                <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 			</properties>
 			<activation>
 				<activeByDefault>false</activeByDefault>
