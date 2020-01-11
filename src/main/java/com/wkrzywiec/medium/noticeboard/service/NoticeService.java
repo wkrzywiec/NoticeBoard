@@ -28,13 +28,9 @@ public class NoticeService {
         return noticeDTOList;
     }
 
-    public NoticeDTO findById(Long id) {
+    public Optional<NoticeDTO> findById(Long id) {
         Optional<Notice> noticeOptional = noticeRepository.findById(id);
-        if (noticeOptional.isPresent()){
-         return INSTANCE.mapToNoticeDTO(noticeOptional.get());
-        } else {
-            return null;
-        }
+        return noticeOptional.map(notice -> INSTANCE.mapToNoticeDTO(notice));
     }
 
     @Transactional

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/notices")
@@ -25,13 +26,17 @@ public class NoticeController {
     }
 
     @GetMapping("/")
-    public List<NoticeDTO> getAllNotices() {
-        return noticeService.findAll();
+    public ResponseEntity<List<NoticeDTO>> getAllNotices() {
+        return new ResponseEntity<>(noticeService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public NoticeDTO getNoticeById(@PathVariable Long id){
-        return noticeService.findById(id);
+    public ResponseEntity<?> getNoticeById(@PathVariable Long id){
+        Optional<NoticeDTO> noticeOpt = noticeService.findById(id);
+
+        return noticeOpt.map(notice ->
+                new ResponseEntity<>(notice, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/")
@@ -41,7 +46,10 @@ public class NoticeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        noticeService.delete(id);
-        return new ResponseEntity<>("No Content", HttpStatus.NO_CONTENT);
+        Optional<NoticeDTO> noticeOpt = noticeService.findById(id);
+
+        return noticeOpt.map(notice ->
+                new ResponseEntity<>("Notice with id " + id + " was deleted.", HttpStatus.NO_CONTENT))
+                .orElse(new ResponseEntity<>("Notice with id: " + id + " was not found", HttpStatus.NOT_FOUND));
     }
 }

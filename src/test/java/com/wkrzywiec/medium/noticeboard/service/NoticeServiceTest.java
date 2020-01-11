@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -79,12 +79,12 @@ public class NoticeServiceTest {
                 .thenReturn(Optional.of(singleNotice(1L)));
 
         //when
-        NoticeDTO noticeDTO = noticeService.findById(1L);
+        Optional<NoticeDTO> noticeDTOOpt = noticeService.findById(1L);
 
         //then
-        assertNotNull(noticeDTO);
-        assertEquals("Notice 1", noticeDTO.getTitle());
-        assertEquals("Notice description 1", noticeDTO.getDescription());
+        assertTrue(noticeDTOOpt.isPresent());
+        assertEquals("Notice 1", noticeDTOOpt.get().getTitle());
+        assertEquals("Notice description 1", noticeDTOOpt.get().getDescription());
     }
 
     @Test
@@ -94,10 +94,10 @@ public class NoticeServiceTest {
                 .thenReturn(Optional.empty());
 
         //when
-        NoticeDTO noticeDTO = noticeService.findById(1L);
+        Optional<NoticeDTO> noticeDTOOpt = noticeService.findById(1L);
 
         //then
-        assertNull(noticeDTO);
+        assertFalse(noticeDTOOpt.isPresent());
     }
 
     @Test

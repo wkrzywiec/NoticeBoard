@@ -14,11 +14,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -75,7 +77,7 @@ public class NoticeControllerTest {
     public void givenNoticeId_whenGETNoticesById_thenGetSingleNotice() throws Exception {
         //given
         when(noticeService.findById(1L))
-                .thenReturn(singleNotice(1));
+                .thenReturn(Optional.of(singleNotice(1)));
 
         //when & then
         mockMvc.perform(
@@ -90,12 +92,16 @@ public class NoticeControllerTest {
 
     @Test
     public void givenIncorrectNoticeId_whenGETNoticesById_thenGetNoeNotice() throws Exception {
+        //given
+        when(noticeService.findById(1L))
+                .thenReturn(Optional.empty());
+
         //when & then
         mockMvc.perform(
                 get("/notices/1")
         )
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -115,6 +121,36 @@ public class NoticeControllerTest {
 
                 .andDo(print())
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void givenNoticeId_whenDELETENotice_thenNoticeIsDeleted() throws Exception {
+        //given
+        Long noticeId = 1L;
+        when(noticeService.findById(1L))
+                .thenReturn(Optional.of(singleNotice(1)));
+
+        //when
+        mockMvc.perform(
+                delete("/notices/" + noticeId)
+        )
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void givenNoticeId_whenDELETENotice_thenNoticeNotFound() throws Exception {
+        //given
+        Long noticeId = 1L;
+        when(noticeService.findById(1L))
+                .thenReturn(Optional.empty());
+
+        //when
+        mockMvc.perform(
+                delete("/notices/" + noticeId)
+        )
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
     private NoticeDTO singleNotice(int id){
