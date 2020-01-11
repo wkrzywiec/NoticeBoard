@@ -2,6 +2,7 @@ package com.wkrzywiec.medium.noticeboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
+import com.wkrzywiec.medium.noticeboard.entity.Notice;
 import com.wkrzywiec.medium.noticeboard.service.NoticeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -148,6 +150,52 @@ public class NoticeControllerTest {
         //when
         mockMvc.perform(
                 delete("/notices/" + noticeId)
+        )
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void givenIdAndUpdatedNotice_whenPUTUpdate_thenNoticeIsUpdated() throws Exception {
+        //given
+        Long noticeId = 1L;
+        NoticeDTO noticeDTO = singleNotice(1);
+
+        when(noticeService.findById(1L))
+                .thenReturn(Optional.of(noticeDTO));
+
+        NoticeDTO updatedNotice = noticeDTO;
+        updatedNotice.setTitle("New Title");
+        updatedNotice.setDescription("New Description");
+
+        //when
+        mockMvc.perform(
+                put("/notices/" + noticeId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(noticeDTO))
+                        .characterEncoding("utf-8")
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("Notice with id 1 was updated."));
+
+    }
+
+    @Test
+    public void givenIdAndUpdatedNotice_whenPUTUpdate_thenNoticeNotFound() throws Exception {
+        //given
+        Long noticeId = 1L;
+        NoticeDTO noticeDTO = singleNotice(1);
+
+        when(noticeService.findById(1L))
+                .thenReturn(Optional.empty());
+
+        //when
+        mockMvc.perform(
+                put("/notices/" + noticeId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(noticeDTO))
+                        .characterEncoding("utf-8")
         )
                 .andDo(print())
                 .andExpect(status().isNotFound());
