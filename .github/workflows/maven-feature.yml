@@ -2,14 +2,13 @@ name: Feature Branch
 
 on:
   push:
-    branches:
-      - '*'
-      - '!master'
-      - '!release'
+    branches-ignore:
+      - 'master'
+      - 'release*'
 
 jobs:
 
-  unit-test:
+  test:
     name: Unit Test
     runs-on: ubuntu-18.04
 

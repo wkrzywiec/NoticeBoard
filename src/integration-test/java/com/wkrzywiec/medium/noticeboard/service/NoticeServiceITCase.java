@@ -11,9 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -55,12 +56,13 @@ public class NoticeServiceITCase {
 
 
         //when
-        NoticeDTO noticeDTO = noticeService.findById(savedNotice.getId());
+        Optional<NoticeDTO> noticeDTOOpt = noticeService.findById(savedNotice.getId());
 
         //then
-        assertEquals(savedNotice.getId(), noticeDTO.getId());
-        assertEquals(savedNotice.getTitle(), noticeDTO.getTitle());
-        assertEquals(savedNotice.getDescription(), noticeDTO.getDescription());
+        assertTrue(noticeDTOOpt.isPresent());
+        assertEquals(savedNotice.getId(), noticeDTOOpt.get().getId());
+        assertEquals(savedNotice.getTitle(), noticeDTOOpt.get().getTitle());
+        assertEquals(savedNotice.getDescription(), noticeDTOOpt.get().getDescription());
     }
 
     @Test
@@ -73,10 +75,10 @@ public class NoticeServiceITCase {
         entityManager.flush();
 
         //when
-        NoticeDTO noticeDTO = noticeService.findById(5000L);
+        Optional<NoticeDTO> noticeDTOOpt = noticeService.findById(5000L);
 
         //then
-        assertNull(noticeDTO);
+        assertTrue(noticeDTOOpt.isEmpty());
     }
 
     @Test

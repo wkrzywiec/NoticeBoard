@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/notices")
@@ -25,13 +27,17 @@ public class NoticeController {
     }
 
     @GetMapping("/")
-    public List<NoticeDTO> getAllNotices() {
-        return noticeService.findAll();
+    public ResponseEntity<List<NoticeDTO>> getAllNotices() {
+        return new ResponseEntity<>(noticeService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public NoticeDTO getNoticeById(@PathVariable Long id){
-        return noticeService.findById(id);
+    public ResponseEntity<NoticeDTO> getNoticeById(@PathVariable Long id){
+        Optional<NoticeDTO> noticeOpt = noticeService.findById(id);
+
+        return noticeOpt.map(notice ->
+                new ResponseEntity<>(notice, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/")
@@ -41,7 +47,20 @@ public class NoticeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        noticeService.delete(id);
-        return new ResponseEntity<>("No Content", HttpStatus.NO_CONTENT);
+        Optional<NoticeDTO> noticeOpt = noticeService.findById(id);
+
+        return noticeOpt.map(notice ->
+                new ResponseEntity<>("Notice with id " + id + " was deleted.", HttpStatus.NO_CONTENT))
+                .orElse(new ResponseEntity<>("Notice with id: " + id + " was not found", HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody NoticeDTO notice) {
+        Optional<NoticeDTO> noticeOpt = noticeService.findById(id);
+        noticeOpt.ifPresent(n -> noticeService.update(id, notice));
+
+        return noticeOpt.map(n ->
+                new ResponseEntity<>("Notice with id " + id + " was updated.", HttpStatus.OK))
+                .orElse(new ResponseEntity<>("Notice with id: " + id + " was not found", HttpStatus.NOT_FOUND));
     }
 }
