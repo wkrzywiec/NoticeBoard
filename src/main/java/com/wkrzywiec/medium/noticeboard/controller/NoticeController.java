@@ -51,7 +51,7 @@ public class NoticeController {
 
         return noticeOpt.map(notice ->
                 new ResponseEntity<>("Notice with id " + id + " was deleted.", HttpStatus.NO_CONTENT))
-                .orElse(new ResponseEntity<>("Notice with id: " + id + " was not found", HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND.getReasonPhrase(), HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/{id}")
@@ -61,6 +61,6 @@ public class NoticeController {
 
         return noticeOpt.map(n ->
                 new ResponseEntity<>("Notice with id " + id + " was updated.", HttpStatus.OK))
-                .orElse(new ResponseEntity<>("Notice with id: " + id + " was not found", HttpStatus.NOT_FOUND));
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND.getReasonPhrase(), HttpStatus.NOT_FOUND));
     }
 }

@@ -2,7 +2,6 @@ package com.wkrzywiec.medium.noticeboard.service;
 
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
 import com.wkrzywiec.medium.noticeboard.entity.Notice;
-import com.wkrzywiec.medium.noticeboard.mapper.NoticeMapper;
 import com.wkrzywiec.medium.noticeboard.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,15 +21,13 @@ public class NoticeService {
 
     public List<NoticeDTO> findAll() {
         List<NoticeDTO> noticeDTOList = new ArrayList<>();
-        noticeRepository.findAll().forEach(notice -> {
-            noticeDTOList.add(INSTANCE.mapToNoticeDTO(notice));
-        });
+        noticeRepository.findAll().forEach(notice -> noticeDTOList.add(INSTANCE.mapToNoticeDTO(notice)));
         return noticeDTOList;
     }
 
     public Optional<NoticeDTO> findById(Long id) {
         Optional<Notice> noticeOptional = noticeRepository.findById(id);
-        return noticeOptional.map(notice -> INSTANCE.mapToNoticeDTO(notice));
+        return noticeOptional.map(INSTANCE::mapToNoticeDTO);
     }
 
     @Transactional
