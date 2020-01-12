@@ -15,7 +15,7 @@ public class NoticeDTO extends BaseDTO {
 
     private String description;
 
-    private BoardDTO board;
+    private Long boardId;
 
     private PersonDTO person;
 }

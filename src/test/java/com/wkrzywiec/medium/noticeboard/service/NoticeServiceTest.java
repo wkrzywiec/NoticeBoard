@@ -1,6 +1,7 @@
 package com.wkrzywiec.medium.noticeboard.service;
 
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
+import com.wkrzywiec.medium.noticeboard.entity.Board;
 import com.wkrzywiec.medium.noticeboard.entity.Notice;
 import com.wkrzywiec.medium.noticeboard.repository.NoticeRepository;
 import org.junit.Test;
@@ -57,6 +58,7 @@ public class NoticeServiceTest {
         assertEquals(1, noticeList.size());
         assertEquals("Notice 1", noticeList.get(0).getTitle());
         assertEquals("Notice description 1", noticeList.get(0).getDescription());
+        assertEquals(Long.valueOf(1), noticeList.get(0).getBoardId());
     }
 
     @Test
@@ -85,6 +87,7 @@ public class NoticeServiceTest {
         assertTrue(noticeDTOOpt.isPresent());
         assertEquals("Notice 1", noticeDTOOpt.get().getTitle());
         assertEquals("Notice description 1", noticeDTOOpt.get().getDescription());
+        assertEquals(Long.valueOf(1), noticeDTOOpt.get().getBoardId());
     }
 
     @Test
@@ -135,10 +138,16 @@ public class NoticeServiceTest {
     }
 
     private Notice singleNotice(Long id){
+        Board board = Board.builder()
+                .id(id)
+                .title("Board " + id)
+                .build();
+
         return Notice.builder()
                 .id(id)
                 .title("Notice " + id)
                 .description("Notice description " + id)
+                .board(board)
                 .build();
     }
 
@@ -152,6 +161,7 @@ public class NoticeServiceTest {
         return NoticeDTO.builder()
                 .title("Notice " + id)
                 .description("Notice description " + id)
+                .boardId(id)
                 .build();
     }
 }
