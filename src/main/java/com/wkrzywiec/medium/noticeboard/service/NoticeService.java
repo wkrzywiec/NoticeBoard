@@ -15,32 +15,37 @@ import static com.wkrzywiec.medium.noticeboard.mapper.NoticeMapper.*;
 
 @Service
 @RequiredArgsConstructor
-public class NoticeService {
+public class NoticeService implements CrudService<NoticeDTO> {
 
     private final NoticeRepository noticeRepository;
 
+    @Override
     public List<NoticeDTO> findAll() {
         List<NoticeDTO> noticeDTOList = new ArrayList<>();
         noticeRepository.findAll().forEach(notice -> noticeDTOList.add(INSTANCE.mapToNoticeDTO(notice)));
         return noticeDTOList;
     }
 
+    @Override
     public Optional<NoticeDTO> findById(Long id) {
         Optional<Notice> noticeOptional = noticeRepository.findById(id);
         return noticeOptional.map(INSTANCE::mapToNoticeDTO);
     }
 
+    @Override
     @Transactional
     public NoticeDTO save(NoticeDTO noticeDTO) {
         Notice notice = INSTANCE.mapToNotice(noticeDTO);
         return INSTANCE.mapToNoticeDTO(noticeRepository.save(notice));
     }
 
+    @Override
     @Transactional
     public void delete(Long id){
         noticeRepository.deleteById(id);
     }
 
+    @Override
     @Transactional
     public NoticeDTO update(Long id, NoticeDTO noticeDTO){
         Notice savedNotice = noticeRepository.findById(id).orElseThrow();
@@ -51,5 +56,4 @@ public class NoticeService {
 
         return INSTANCE.mapToNoticeDTO(noticeRepository.save(savedNotice));
     }
-
 }
