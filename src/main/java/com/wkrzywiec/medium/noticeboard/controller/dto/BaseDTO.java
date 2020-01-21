@@ -1,5 +1,6 @@
 package com.wkrzywiec.medium.noticeboard.controller.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,9 @@ import java.util.Date;
 @AllArgsConstructor
 public abstract class BaseDTO {
 
+    @ApiModelProperty(value = "The id of the object")
     private Long id;
 
+    @ApiModelProperty(value = "The date when the object was created")
     private Date creationDate;
 }

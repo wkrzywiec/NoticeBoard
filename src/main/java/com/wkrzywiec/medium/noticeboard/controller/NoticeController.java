@@ -2,6 +2,7 @@ package com.wkrzywiec.medium.noticeboard.controller;
 
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
 import com.wkrzywiec.medium.noticeboard.service.NoticeService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +22,13 @@ public class NoticeController implements CrudController<NoticeDTO> {
     }
 
     @Override
+    @ApiOperation(value = "List all Notices")
     public ResponseEntity<List<NoticeDTO>> getAll() {
         return new ResponseEntity<>(noticeService.findAll(), HttpStatus.OK);
     }
 
     @Override
+    @ApiOperation(value = "Get Notice by its Id")
     public ResponseEntity<NoticeDTO> getById(Long id) {
         Optional<NoticeDTO> noticeOpt = noticeService.findById(id);
 
@@ -35,11 +38,13 @@ public class NoticeController implements CrudController<NoticeDTO> {
     }
 
     @Override
+    @ApiOperation(value = "Create a Notice")
     public ResponseEntity<NoticeDTO> save(NoticeDTO notice) {
         return new ResponseEntity<>(noticeService.save(notice), HttpStatus.CREATED);
     }
 
     @Override
+    @ApiOperation(value = "Delete a Notice by its Id")
     public ResponseEntity<String> delete(Long id) {
         Optional<NoticeDTO> noticeOpt = noticeService.findById(id);
 
@@ -49,6 +54,7 @@ public class NoticeController implements CrudController<NoticeDTO> {
     }
 
     @Override
+    @ApiOperation(value = "Update an existing Notice by its Id")
     public ResponseEntity<String> update(Long id, NoticeDTO notice) {
         Optional<NoticeDTO> noticeOpt = noticeService.findById(id);
         noticeOpt.ifPresent(n -> noticeService.update(id, notice));
