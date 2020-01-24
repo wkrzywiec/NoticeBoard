@@ -2,15 +2,15 @@ package com.wkrzywiec.medium.noticeboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
-import com.wkrzywiec.medium.noticeboard.entity.Notice;
 import com.wkrzywiec.medium.noticeboard.service.NoticeService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -30,8 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(NoticeController.class)
+@DisplayName("Unit tests of NoticeController")
 public class NoticeControllerTest {
 
     @Autowired
@@ -41,6 +42,7 @@ public class NoticeControllerTest {
     private NoticeService noticeService;
 
     @Test
+    @DisplayName("GET an empty list of Notices")
     public void givenNoNotices_whenGETNotices_thenGetEmptyList() throws Exception {
         //given
         when(noticeService.findAll())
@@ -59,6 +61,7 @@ public class NoticeControllerTest {
     }
 
     @Test
+    @DisplayName("GET a list with single Notice")
     public void givenSingleNotice_whenGETNotices_thenGetSingleNoticeList() throws Exception {
         //given
         when(noticeService.findAll())
@@ -76,6 +79,7 @@ public class NoticeControllerTest {
     }
 
     @Test
+    @DisplayName("GET a Notice by Id")
     public void givenNoticeId_whenGETNoticesById_thenGetSingleNotice() throws Exception {
         //given
         when(noticeService.findById(1L))
@@ -93,7 +97,8 @@ public class NoticeControllerTest {
     }
 
     @Test
-    public void givenIncorrectNoticeId_whenGETNoticesById_thenGetNoeNotice() throws Exception {
+    @DisplayName("GET a Notice by Id and return 404 Not Found")
+    public void givenIncorrectNoticeId_whenGETNoticesById_thenGetNotFoundNotice() throws Exception {
         //given
         when(noticeService.findById(1L))
                 .thenReturn(Optional.empty());
@@ -107,6 +112,7 @@ public class NoticeControllerTest {
     }
 
     @Test
+    @DisplayName("POST a Notice to create it")
     public void givenNotice_whenPOSTSave_thenGetSavedNotice() throws Exception {
         //given
         NoticeDTO noticeDTO = singleNotice(1);
@@ -126,6 +132,7 @@ public class NoticeControllerTest {
     }
 
     @Test
+    @DisplayName("DELETE a Notice by Id")
     public void givenNoticeId_whenDELETENotice_thenNoticeIsDeleted() throws Exception {
         //given
         Long noticeId = 1L;
@@ -141,6 +148,7 @@ public class NoticeControllerTest {
     }
 
     @Test
+    @DisplayName("DELETE a Notice by Id and return 404 HTTP Not Found")
     public void givenNoticeId_whenDELETENotice_thenNoticeNotFound() throws Exception {
         //given
         Long noticeId = 1L;
@@ -156,6 +164,7 @@ public class NoticeControllerTest {
     }
 
     @Test
+    @DisplayName("PUT a Notice by Id to update it")
     public void givenIdAndUpdatedNotice_whenPUTUpdate_thenNoticeIsUpdated() throws Exception {
         //given
         Long noticeId = 1L;
@@ -182,6 +191,7 @@ public class NoticeControllerTest {
     }
 
     @Test
+    @DisplayName("PUT a Notice by Id to update it and return 404 HTTP Not Found")
     public void givenIdAndUpdatedNotice_whenPUTUpdate_thenNoticeNotFound() throws Exception {
         //given
         Long noticeId = 1L;

@@ -1,6 +1,7 @@
 package com.wkrzywiec.medium.noticeboard.repository;
 
 import com.wkrzywiec.medium.noticeboard.entity.Notice;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
+@DisplayName("Integration Tests of NoticeRepository with H2 Database")
 public class NoticeRepositoryITCase {
 
     @Autowired
@@ -27,6 +29,7 @@ public class NoticeRepositoryITCase {
     private EntityManager entityManager;
 
     @Test
+    @DisplayName("Get a Notice by Id")
     public void givenSingleNotice_whenFindById_thenGetNotice() {
         //given
 
@@ -43,6 +46,7 @@ public class NoticeRepositoryITCase {
     }
 
     @Test
+    @DisplayName("Get a list with 3 Notices")
     public void given3Notices_whenFindAll_thenGetNotices() {
         //given
         entityManager.persist(singleNotice(1L));
@@ -63,6 +67,7 @@ public class NoticeRepositoryITCase {
     }
 
     @Test
+    @DisplayName("Get a Notice by Id when 2 Notices are in database")
     public void given2Notices_whenFindById_thenGetSingleNotice() {
         //given
         entityManager.persist(singleNotice(1L));
@@ -80,6 +85,7 @@ public class NoticeRepositoryITCase {
     }
 
     @Test
+    @DisplayName("Save a Notice")
     public void givenSingleNotice_whenSave_thenNoticeIsSaved() {
         //given
         Notice notice = singleNotice(1L);
@@ -94,6 +100,7 @@ public class NoticeRepositoryITCase {
     }
 
     @Test
+    @DisplayName("Delete Notice by Id")
     public void given2SavedNotices_whenDeleteById_thenOnlyOneNoticeInDb() {
         //given
         entityManager.persist(singleNotice(1L));

@@ -2,19 +2,17 @@ package com.wkrzywiec.medium.noticeboard.controller;
 
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
 import com.wkrzywiec.medium.noticeboard.entity.Notice;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +21,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableTransactionManagement
 public class NoticeControllerITCase {
@@ -40,7 +38,7 @@ public class NoticeControllerITCase {
 
     @Test
     @Transactional
-    @Ignore("NoticeRepository don't see saved entity")
+    @Disabled("NoticeRepository don't see saved entity")
     public void givenSingleNotice_whenGETAllNotices_thenGetSingleNoticeList() {
         //given
         entityManager.persist(singleNotice(1L));

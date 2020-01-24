@@ -4,11 +4,12 @@ import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
 import com.wkrzywiec.medium.noticeboard.entity.Board;
 import com.wkrzywiec.medium.noticeboard.entity.Notice;
 import com.wkrzywiec.medium.noticeboard.repository.NoticeRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +24,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
+@DisplayName("Unit tests of NoticeService class")
 public class NoticeServiceTest {
 
     @Mock
@@ -33,6 +35,7 @@ public class NoticeServiceTest {
     private NoticeService noticeService;
 
     @Test
+    @DisplayName("Get an empty list of Notices")
     public void givenNoNotices_whenFindAllNotices_thenGetEmptyList() {
         //given
         when(noticeRepository.findAll())
@@ -46,6 +49,7 @@ public class NoticeServiceTest {
     }
 
     @Test
+    @DisplayName("Get a list with single Notice")
     public void givenSingleNotices_whenFindAllNotices_thenSingleNoticeList() {
         //given
         when(noticeRepository.findAll())
@@ -62,6 +66,7 @@ public class NoticeServiceTest {
     }
 
     @Test
+    @DisplayName("Get a list of 500 Notices")
     public void given500Notices_whenFindAllNotices_then500NoticeList() {
         //given
         when(noticeRepository.findAll())
@@ -75,6 +80,7 @@ public class NoticeServiceTest {
     }
 
     @Test
+    @DisplayName("Get a Notice by Id")
     public void givenSingleNotice_whenFindById_thenGetSingleNotice(){
         //given
         when(noticeRepository.findById(any(Long.class)))
@@ -91,7 +97,8 @@ public class NoticeServiceTest {
     }
 
     @Test
-    public void givenNoNotice_whenFindById_thenGetNull(){
+    @DisplayName("Get a Notice by Id and return empty result")
+    public void givenNoNotice_whenFindById_thenGetEmptyOptional(){
         //given
         when(noticeRepository.findById(any(Long.class)))
                 .thenReturn(Optional.empty());
@@ -104,6 +111,7 @@ public class NoticeServiceTest {
     }
 
     @Test
+    @DisplayName("Save a Notice")
     public void givenNotice_whenSave_thenGetSavedNotice() {
         //given
         when(noticeRepository.save(any(Notice.class)))
@@ -119,6 +127,7 @@ public class NoticeServiceTest {
     }
 
     @Test
+    @DisplayName("Update a Notice")
     public void givenSavedNotice_whenUpdate_thenNoticeIsUpdated() {
         //given
         when(noticeRepository.findById(any(Long.class)))
