@@ -186,7 +186,7 @@ public class NoticeControllerTest {
         )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("Notice with id 1 was updated."));
+                .andExpect(content().string("Object with id 1 was updated."));
 
     }
 
