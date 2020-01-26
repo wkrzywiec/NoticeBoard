@@ -24,10 +24,6 @@ public class Notice extends BaseEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "board_id")
-    private Board board;
-
-    @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
 }

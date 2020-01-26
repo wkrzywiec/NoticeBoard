@@ -20,9 +20,6 @@ public class NoticeDTO extends BaseDTO {
     @ApiModelProperty(value = "Notice detailed description")
     private String description;
 
-    @ApiModelProperty(value = "An id of a Board where this Notice is assigned to")
-    private Long boardId;
-
     @ApiModelProperty(value = "A Person who created this Notice")
     private PersonDTO person;
 }
