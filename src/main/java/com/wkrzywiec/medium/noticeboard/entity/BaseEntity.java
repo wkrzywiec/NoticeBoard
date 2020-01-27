@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,5 +26,6 @@ public abstract class BaseEntity {
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="creation_date", columnDefinition="TIMESTAMP DEFAULT NOW()")
     private Date creationDate;
 }
