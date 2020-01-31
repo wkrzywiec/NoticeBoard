@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BoardDTO extends BaseDTO {
 
-    private String name;
+    private String title;
 
     private List<NoticeDTO> noticeList;
 }

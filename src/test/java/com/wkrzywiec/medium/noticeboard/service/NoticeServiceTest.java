@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
+import static com.wkrzywiec.medium.noticeboard.util.TestDataFactory.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -52,7 +53,7 @@ public class NoticeServiceTest {
     public void givenSingleNotices_whenFindAllNotices_thenSingleNoticeList() {
         //given
         when(noticeRepository.findAll())
-                .thenReturn(noticeList(1L));
+                .thenReturn(getNoticeList(1L));
 
         //when
         List<NoticeDTO> noticeList = noticeService.findAll();
@@ -68,7 +69,7 @@ public class NoticeServiceTest {
     public void given500Notices_whenFindAllNotices_then500NoticeList() {
         //given
         when(noticeRepository.findAll())
-                .thenReturn(noticeList(500L));
+                .thenReturn(getNoticeList(500L));
 
         //when
         List<NoticeDTO> noticeList = noticeService.findAll();
@@ -82,7 +83,7 @@ public class NoticeServiceTest {
     public void givenSingleNotice_whenFindById_thenGetSingleNotice(){
         //given
         when(noticeRepository.findById(any(Long.class)))
-                .thenReturn(Optional.of(singleNotice(1L)));
+                .thenReturn(Optional.of(getSingleNotice(1L)));
 
         //when
         Optional<NoticeDTO> noticeDTOOpt = noticeService.findById(1L);
@@ -112,9 +113,9 @@ public class NoticeServiceTest {
     public void givenNotice_whenSave_thenGetSavedNotice() {
         //given
         when(noticeRepository.save(any(Notice.class)))
-                .thenReturn(singleNotice(1L));
+                .thenReturn(getSingleNotice(1L));
 
-        NoticeDTO noticeDTO = singleNoticeDTO(1L);
+        NoticeDTO noticeDTO = getSingleNoticeDTO(1L);
 
         //when
         NoticeDTO savedNotice = noticeService.save(noticeDTO);
@@ -128,12 +129,12 @@ public class NoticeServiceTest {
     public void givenSavedNotice_whenUpdate_thenNoticeIsUpdated() {
         //given
         when(noticeRepository.findById(any(Long.class)))
-                .thenReturn(Optional.of(singleNotice(1L)));
+                .thenReturn(Optional.of(getSingleNotice(1L)));
 
         when(noticeRepository.save(any(Notice.class)))
-                .thenReturn(singleNotice(2L));
+                .thenReturn(getSingleNotice(2L));
 
-        NoticeDTO afterUpdeNoticeDTO = singleNoticeDTO(2L);
+        NoticeDTO afterUpdeNoticeDTO = getSingleNoticeDTO(2L);
 
         //when
         NoticeDTO updatedNoticeDTO = noticeService.update(1L, afterUpdeNoticeDTO);
@@ -141,26 +142,5 @@ public class NoticeServiceTest {
         //then
         assertEquals(afterUpdeNoticeDTO.getTitle(), updatedNoticeDTO.getTitle());
         assertEquals(afterUpdeNoticeDTO.getDescription(), updatedNoticeDTO.getDescription());
-    }
-
-    private Notice singleNotice(Long id){
-        return Notice.builder()
-                .id(id)
-                .title("Notice " + id)
-                .description("Notice description " + id)
-                .build();
-    }
-
-    private List<Notice> noticeList(Long noticesCount){
-        return LongStream.rangeClosed(1, noticesCount)
-                .mapToObj(id -> singleNotice(id))
-                .collect(Collectors.toList());
-    }
-
-    private NoticeDTO singleNoticeDTO(Long id){
-        return NoticeDTO.builder()
-                .title("Notice " + id)
-                .description("Notice description " + id)
-                .build();
     }
 }
