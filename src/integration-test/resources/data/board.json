@@ -1,0 +1,10 @@
+{
+  "title": "Board TEST title",
+  "noticeList": [
+    {
+      "title": "Notice TEST title",
+      "description": "Notice TEST description",
+      "person": null
+    }
+  ]
+}

@@ -22,21 +22,21 @@ public class NoticeService implements CrudService<NoticeDTO> {
     @Override
     public List<NoticeDTO> findAll() {
         List<NoticeDTO> noticeDTOList = new ArrayList<>();
-        noticeRepository.findAll().forEach(notice -> noticeDTOList.add(INSTANCE.mapToNoticeDTO(notice)));
+        noticeRepository.findAll().forEach(notice -> noticeDTOList.add(INSTANCE.noticeToDto(notice)));
         return noticeDTOList;
     }
 
     @Override
     public Optional<NoticeDTO> findById(Long id) {
         Optional<Notice> noticeOptional = noticeRepository.findById(id);
-        return noticeOptional.map(INSTANCE::mapToNoticeDTO);
+        return noticeOptional.map(INSTANCE::noticeToDto);
     }
 
     @Override
     @Transactional
     public NoticeDTO save(NoticeDTO noticeDTO) {
-        Notice notice = INSTANCE.mapToNotice(noticeDTO);
-        return INSTANCE.mapToNoticeDTO(noticeRepository.save(notice));
+        Notice notice = INSTANCE.dtoToNotice(noticeDTO);
+        return INSTANCE.noticeToDto(noticeRepository.save(notice));
     }
 
     @Override
@@ -49,11 +49,11 @@ public class NoticeService implements CrudService<NoticeDTO> {
     @Transactional
     public NoticeDTO update(Long id, NoticeDTO noticeDTO){
         Notice savedNotice = noticeRepository.findById(id).orElseThrow();
-        Notice noticeToUpdate = INSTANCE.mapToNotice(noticeDTO);
+        Notice noticeToUpdate = INSTANCE.dtoToNotice(noticeDTO);
 
         savedNotice.setTitle(noticeToUpdate.getTitle());
         savedNotice.setDescription(noticeToUpdate.getDescription());
 
-        return INSTANCE.mapToNoticeDTO(noticeRepository.save(savedNotice));
+        return INSTANCE.noticeToDto(noticeRepository.save(savedNotice));
     }
 }

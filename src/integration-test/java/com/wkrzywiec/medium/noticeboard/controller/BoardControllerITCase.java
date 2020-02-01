@@ -12,16 +12,16 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 
-@DisplayName("Integration Tests of the NoticeController REST endpoints")
-public class NoticeControllerITCase extends CrudControllerITCase {
+@DisplayName("Integration Tests of the Board CRUD REST endpoints")
+public class BoardControllerITCase extends CrudControllerITCase {
 
     @Test
-    @DisplayName("GET a list with 4 Notices")
-    public void whenGETAllNotices_thenGetListOf4Notices() {
+    @DisplayName("GET a list with 5 Boards")
+    public void whenGETfindAll_thenGetListOf5Boards() {
         //when
         ValidatableResponse response = given()
                 .when()
-                .get( baseURL + "/notices/")
+                .get( baseURL + "/boards/")
 
                 .prettyPeek()
                 .then();
@@ -29,19 +29,19 @@ public class NoticeControllerITCase extends CrudControllerITCase {
         //then
         response.statusCode(HttpStatus.OK.value())
                 .contentType("application/json")
-                .body("size()", greaterThanOrEqualTo(3));
+                .body("size()", greaterThanOrEqualTo(4));
     }
 
     @Test
-    @DisplayName("GET a Notice by Id")
-    public void givenNoticeId_thenGetSingleNotice() {
+    @DisplayName("GET a Board by Id")
+    public void givenBoardId_thenGetSingleBoard() {
         //given
-        Long noticeId = 1L;
+        Long boardId = 2L;
 
         //when
         ValidatableResponse response = given()
                 .when()
-                .get(baseURL + "/notices/" + noticeId)
+                .get(baseURL + "/boards/" + boardId)
 
                 .prettyPeek()
                 .then();
@@ -49,29 +49,28 @@ public class NoticeControllerITCase extends CrudControllerITCase {
         //then
         response.statusCode(HttpStatus.OK.value())
                 .contentType("application/json")
-                .body("id", equalTo(1))
-                .body("creationDate", equalTo("2020-01-26T09:00:30.000+0000"))
-                .body("title", equalTo("Notice 1 title"))
-                .body("description", equalTo("Notice 1 description"))
-                .body("person.id", equalTo(1))
-                .body("person.creationDate", equalTo("2020-01-26T09:02:50.000+0000"))
-                .body("person.firstName", equalTo("John"))
-                .body("person.lastName", equalTo("Doe"));
+                .body("id", equalTo(2))
+                .body("title", equalTo("Board 2 title"))
+                .body("noticeList[0].id", equalTo(4))
+                .body("noticeList[0].title", equalTo("Notice TEST title"))
+                .body("noticeList[0].description", equalTo("Notice TEST description"))
+                .body("noticeList[0].person.firstName", equalTo("John"))
+                .body("noticeList[0].person.lastName", equalTo("Doe"));
     }
 
     @Test
-    @DisplayName("POST a Notice to create it")
-    public void givenNotice_whenPOSTSave_thenGetSavedNotice(){
+    @DisplayName("POST a Board to create it")
+    public void givenBoard_whenPOSTSave_thenGetSavedBoard(){
         //given
-        JsonObject noticeJson = TestDataProvider.getNoticeJson();
+        JsonObject boardJson = TestDataProvider.getBoardJson();
 
         //when
         ValidatableResponse response = given()
                 .contentType("application/json")
-                .body(noticeJson.toString())
+                .body(boardJson.toString())
 
                 .when()
-                .post(baseURL + "/notices/")
+                .post(baseURL + "/boards/")
 
                 .prettyPeek()
                 .then();
@@ -79,23 +78,24 @@ public class NoticeControllerITCase extends CrudControllerITCase {
         //then
         response.statusCode(HttpStatus.CREATED.value())
                 .body("id", notNullValue())
-//                .body("creationDate", notNullValue())
-                .body("title", equalTo("Notice TEST title"))
-                .body("description", equalTo("Notice TEST description"));
+                .body("title", equalTo("Board TEST title"))
+                .body("noticeList[0].id",  notNullValue())
+                .body("noticeList[0].title", equalTo("Notice TEST title"))
+                .body("noticeList[0].description", equalTo("Notice TEST description"));
     }
 
     @Test
-    @DisplayName("DELETE a Notice by Id")
-    public void givenNoticeId_whenDELETENotice_thenNoticeIsDeleted() {
+    @DisplayName("DELETE a Board by Id")
+    public void givenBoardId_whenDELETEbyId_thenBoardIsDeleted() {
         //given
-        Long noticeId = 3L;
+        Long boardId = 3L;
 
         //when
         ValidatableResponse response = given()
                 .contentType("application/json")
 
                 .when()
-                .delete(baseURL + "/notices/" + noticeId)
+                .delete(baseURL + "/boards/" + boardId)
 
                 .prettyPeek()
                 .then();
@@ -104,19 +104,19 @@ public class NoticeControllerITCase extends CrudControllerITCase {
     }
 
     @Test
-    @DisplayName("PUT a Notice by Id to update it")
-    public void givenIdAndUpdatedNotice_whenPUTUpdate_thenNoticeIsUpdated() {
+    @DisplayName("PUT a Board by Id to update it")
+    public void givenIdAndUpdatedBoard_whenPUTUpdate_thenBoardIsUpdated() {
         //given
-        Long noticeId = 4L;
-        JsonObject noticeJson = TestDataProvider.getNoticeJson();
+        Long boardId = 4L;
+        JsonObject boardJson = TestDataProvider.getBoardJson();
 
         //when
         ValidatableResponse response = given()
                 .contentType("application/json")
-                .body(noticeJson.toString())
+                .body(boardJson.toString())
 
                 .when()
-                .put(baseURL + "/notices/" + noticeId)
+                .put(baseURL + "/boards/" + boardId)
 
                 .prettyPeek()
                 .then();

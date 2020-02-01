@@ -8,9 +8,8 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface NoticeMapper {
 
-    NoticeMapper INSTANCE = Mappers.getMapper( NoticeMapper.class);
+    NoticeMapper INSTANCE = Mappers.getMapper(NoticeMapper.class);
 
-    NoticeDTO mapToNoticeDTO(Notice notice);
-
-    Notice mapToNotice(NoticeDTO noticeDTO);
+    NoticeDTO noticeToDto(Notice notice);
+    Notice dtoToNotice(NoticeDTO noticeDTO);
 }

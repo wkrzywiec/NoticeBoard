@@ -2,11 +2,12 @@ package com.wkrzywiec.medium.noticeboard.service;
 
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
 import com.wkrzywiec.medium.noticeboard.entity.Notice;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -17,8 +18,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
+@DisplayName("Integration Tests of NoticeService with H2 Database")
 public class NoticeServiceITCase {
 
     @Autowired
@@ -29,6 +31,7 @@ public class NoticeServiceITCase {
 
     @Test
     @Transactional
+    @DisplayName("Get a list with 3 Notices")
     public void given3NoticesInDb_whenFindAll_thenGet3Notices() {
         //given
         entityManager.persist(singleNotice(1L));
@@ -45,6 +48,7 @@ public class NoticeServiceITCase {
 
     @Test
     @Transactional
+    @DisplayName("Get a list with single Notice")
     public void given3NoticesInDb_whenFindById_thenGetSingleNotice() {
         //given
         entityManager.persist(singleNotice(1L));
@@ -67,7 +71,8 @@ public class NoticeServiceITCase {
 
     @Test
     @Transactional
-    public void given3NoticesInDb_whenFindById_thenGetNull() {
+    @DisplayName("Get a Notice by Id and return empty result")
+    public void given3NoticesInDb_whenFindById_thenGetEmptyOptional() {
         //given
         entityManager.persist(singleNotice(1L));
         entityManager.persist(singleNotice(2L));
@@ -83,6 +88,7 @@ public class NoticeServiceITCase {
 
     @Test
     @Transactional
+    @DisplayName("Save a Notice")
     public void givenNotice_whenSave_thenGetSavedNotice() {
         //given
         NoticeDTO notice = singleNoticeDTO(1L);
@@ -98,6 +104,7 @@ public class NoticeServiceITCase {
 
     @Test
     @Transactional
+    @DisplayName("Delete Notice by Id")
     public void given3NoticesInDb_whenDeleteById_thenGet2Notices() {
         //given
         entityManager.persist(singleNotice(1L));
@@ -116,6 +123,7 @@ public class NoticeServiceITCase {
 
     @Test
     @Transactional
+    @DisplayName("Update a Notice")
     public void givenSavedNoticeInDb_whenUpdate_thenNoticeIsUpdated() {
         //given
         entityManager.persist(singleNotice(1L));
