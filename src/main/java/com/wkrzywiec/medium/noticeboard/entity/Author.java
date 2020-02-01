@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Person extends BaseEntity {
+public class Author extends BaseEntity {
 
     @Column(name = "first_name")
     private String firstName;

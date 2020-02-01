@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonDTO extends BaseDTO {
+public class AuthorDTO extends BaseDTO {
 
     private String firstName;
 
