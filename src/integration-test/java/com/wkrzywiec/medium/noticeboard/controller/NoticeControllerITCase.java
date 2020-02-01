@@ -50,11 +50,9 @@ public class NoticeControllerITCase extends CrudControllerITCase {
         response.statusCode(HttpStatus.OK.value())
                 .contentType("application/json")
                 .body("id", equalTo(1))
-                .body("creationDate", equalTo("2020-01-26T09:00:30.000+0000"))
                 .body("title", equalTo("Notice 1 title"))
                 .body("description", equalTo("Notice 1 description"))
                 .body("person.id", equalTo(1))
-                .body("person.creationDate", equalTo("2020-01-26T09:02:50.000+0000"))
                 .body("person.firstName", equalTo("John"))
                 .body("person.lastName", equalTo("Doe"));
     }

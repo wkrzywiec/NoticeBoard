@@ -52,8 +52,8 @@ public class BoardControllerITCase extends CrudControllerITCase {
                 .body("id", equalTo(2))
                 .body("title", equalTo("Board 2 title"))
                 .body("noticeList[0].id", equalTo(4))
-                .body("noticeList[0].title", equalTo("Notice TEST title"))
-                .body("noticeList[0].description", equalTo("Notice TEST description"))
+                .body("noticeList[0].title", equalTo("Notice 4 title"))
+                .body("noticeList[0].description", equalTo("Notice 4 description"))
                 .body("noticeList[0].person.firstName", equalTo("John"))
                 .body("noticeList[0].person.lastName", equalTo("Doe"));
     }
