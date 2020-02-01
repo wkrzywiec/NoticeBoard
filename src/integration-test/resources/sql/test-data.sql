@@ -3,8 +3,11 @@ INSERT INTO public.person (creation_date,first_name,last_name) VALUES
 ;
 
 INSERT INTO public.board (creation_date,title) VALUES
-('2020-01-26 09:59:35.000','Title 1')
-,('2020-01-26 10:00:06.000','Title 2')
+('2020-01-26 09:59:35.000','Board 1 title')
+,('2020-01-26 10:00:06.000','Board 2 title')
+,('2020-01-26 10:02:16.000','Board 3 title')
+,('2020-01-26 10:02:56.000','Board 4 title')
+,('2020-01-26 10:03:28.000','Board 5 title')
 ;
 
 INSERT INTO public.notice (creation_date,description,title,board_id,person_id) VALUES

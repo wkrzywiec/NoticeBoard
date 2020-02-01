@@ -25,7 +25,7 @@ public class TestDataFactory {
                 .collect(Collectors.toList());
     }
 
-    private static List<NoticeDTO> getNoticeListDTO(Long noticesCount) {
+    public static List<NoticeDTO> getNoticeListDTO(Long noticesCount) {
         return LongStream.rangeClosed(1, noticesCount)
                 .mapToObj(TestDataFactory::getSingleNoticeDTO)
                 .collect(Collectors.toList());
@@ -58,5 +58,11 @@ public class TestDataFactory {
                 .title("Board " + id)
                 .noticeList(getNoticeListDTO(noticesCount))
                 .build();
+    }
+
+    public static List<BoardDTO> getBoardListDTO(Long boardsCount, Long noticesCount){
+        return LongStream.rangeClosed(1, boardsCount)
+                .mapToObj(id -> getSingleBoardDTO(id, noticesCount))
+                .collect(Collectors.toList());
     }
 }

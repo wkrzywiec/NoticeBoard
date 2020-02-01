@@ -18,10 +18,16 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class TestDataProvider {
 
     private static final String NOTICE_JSON_PATH = "data/notice.json";
+    private static final String BOARD_JSON_PATH = "data/board.json";
 
     public static JsonObject getNoticeJson(){
         String noticeString = getJsonString(NOTICE_JSON_PATH);
         return mapStringToJsonObject(noticeString);
+    }
+
+    public static JsonObject getBoardJson(){
+        String boardString = getJsonString(BOARD_JSON_PATH);
+        return mapStringToJsonObject(boardString);
     }
 
     private static String getJsonString(String path) {
