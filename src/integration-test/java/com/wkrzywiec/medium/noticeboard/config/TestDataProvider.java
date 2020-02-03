@@ -19,6 +19,7 @@ public class TestDataProvider {
 
     private static final String NOTICE_JSON_PATH = "data/notice.json";
     private static final String BOARD_JSON_PATH = "data/board.json";
+    private static final String AUTHOR_JSON_PATH = "data/author.json";
 
     public static JsonObject getNoticeJson(){
         String noticeString = getJsonString(NOTICE_JSON_PATH);
@@ -28,6 +29,11 @@ public class TestDataProvider {
     public static JsonObject getBoardJson(){
         String boardString = getJsonString(BOARD_JSON_PATH);
         return mapStringToJsonObject(boardString);
+    }
+
+    public static JsonObject getAuthorJson(){
+        String authorString = getJsonString(AUTHOR_JSON_PATH);
+        return mapStringToJsonObject(authorString);
     }
 
     private static String getJsonString(String path) {

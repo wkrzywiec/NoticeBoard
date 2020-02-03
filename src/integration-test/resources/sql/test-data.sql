@@ -1,5 +1,7 @@
 INSERT INTO public.author (creation_date,first_name,last_name) VALUES
 ('2020-01-26 10:02:50.000','John','Doe')
+,('2020-01-26 10:02:50.000','Jane','Doe')
+,('2020-01-26 10:02:50.000','John','Targaryen')
 ;
 
 INSERT INTO public.board (creation_date,title) VALUES
