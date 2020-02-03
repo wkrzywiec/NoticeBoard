@@ -1,8 +1,9 @@
 package com.wkrzywiec.medium.noticeboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wkrzywiec.medium.noticeboard.controller.dto.AuthorDTO;
 import com.wkrzywiec.medium.noticeboard.controller.dto.BoardDTO;
-import com.wkrzywiec.medium.noticeboard.service.BoardService;
+import com.wkrzywiec.medium.noticeboard.service.AuthorService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,33 +18,36 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static com.wkrzywiec.medium.noticeboard.util.TestDataFactory.*;
+import static com.wkrzywiec.medium.noticeboard.util.TestDataFactory.getSingleBoardDTO;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(BoardController.class)
-@DisplayName("Unit tests of BoardController")
-public class BoardControllerTest {
+@WebMvcTest(AuthorController.class)
+@DisplayName("Unit tests of AuthorController")
+public class AuthorControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private BoardService boardService;
+    private AuthorService authorService;
 
     @Test
-    @DisplayName("GET an empty list of Boards")
-    public void givenNoBoards_whenGETfindAll_thenGetEmptyList() throws Exception {
+    @DisplayName("GET an empty list of Authors")
+    public void givenNoAuthors_whenGETfindAll_thenGetEmptyList() throws Exception {
         //given
-        when(boardService.findAll())
+        when(authorService.findAll())
                 .thenReturn(Collections.emptyList());
 
         // when
         mockMvc.perform(
-                get("/boards/")
+                get("/authors/")
         )
                 // then
                 .andDo(print())
@@ -54,68 +58,68 @@ public class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("GET a list with single Board")
-    public void givenSingleBoard_whenGETfindAll_thenGetSingleBoardList() throws Exception {
+    @DisplayName("GET a list with single Author")
+    public void givenSingleAuthor_whenGETfindAll_thenGetSingleAuthorList() throws Exception {
         //given
-        when(boardService.findAll())
-                .thenReturn(getBoardListDTO(1L, 1L));
+        when(authorService.findAll())
+                .thenReturn(getAuthorListDTO(1L));
 
         mockMvc.perform(
-                get("/boards/")
+                get("/authors/")
         )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("[0].title").value("Board 1"))
-                .andExpect(jsonPath("[0].noticeList", hasSize(1)));
+                .andExpect(jsonPath("[0].firstName").value("First Name 1"))
+                .andExpect(jsonPath("[0].lastName").value("Last Name 1"));
     }
 
     @Test
-    @DisplayName("GET a Board by Id")
-    public void givenBoardId_whenGETById_thenGetSingleBoard() throws Exception {
+    @DisplayName("GET an Author by Id")
+    public void givenAuthorId_whenGETById_thenGetSingleAuthor() throws Exception {
         //given
-        when(boardService.findById(1L))
-                .thenReturn(Optional.of(getSingleBoardDTO(1L, 1L)));
+        when(authorService.findById(1L))
+                .thenReturn(Optional.of(getSingleAuthorDTO(1L)));
 
         //when & then
         mockMvc.perform(
-                get("/boards/1")
+                get("/authors/1")
         )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.title").value("Board 1"))
-                .andExpect(jsonPath("$.noticeList", hasSize(1)));
+                .andExpect(jsonPath("$.firstName").value("First Name 1"))
+                .andExpect(jsonPath("$.lastName").value("Last Name 1"));
     }
 
     @Test
-    @DisplayName("GET a Board by Id and return 404 Not Found")
-    public void givenIncorrectBoardId_whenGETById_thenGetNotFoundBoard() throws Exception {
+    @DisplayName("GET an Author by Id and return 404 Not Found")
+    public void givenIncorrectAuthorId_whenGETById_thenGetNotFoundBoard() throws Exception {
         //given
-        when(boardService.findById(1L))
+        when(authorService.findById(1L))
                 .thenReturn(Optional.empty());
 
         //when & then
         mockMvc.perform(
-                get("/boards/1")
+                get("/authors/1")
         )
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    @DisplayName("POST a Notice to create it")
-    public void givenBoard_whenPOSTSave_thenGetSavedBoard() throws Exception {
+    @DisplayName("POST an Author to create it")
+    public void givenAuthor_whenPOSTSave_thenGetSavedAuthor() throws Exception {
         //given
-        BoardDTO boardDTO = getSingleBoardDTO(1L, 5L);
-        boardDTO.setId(null);
+        AuthorDTO authorDTO = getSingleAuthorDTO(1L);
+        authorDTO.setId(null);
 
         //when
         mockMvc.perform(
-                post("/boards/")
+                post("/authors/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(boardDTO))
+                        .content(asJsonString(authorDTO))
                         .characterEncoding("utf-8")
 
         )
@@ -125,56 +129,56 @@ public class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE a Board by Id")
-    public void givenBoardId_whenDELETEById_thenBoardIsDeleted() throws Exception {
+    @DisplayName("DELETE an Author by Id")
+    public void givenAuthorId_whenDELETEById_thenAuthorIsDeleted() throws Exception {
         //given
-        Long boardId = 1L;
-        when(boardService.findById(1L))
-                .thenReturn(Optional.of(getSingleBoardDTO(1L, 5L)));
+        Long authorId = 1L;
+        when(authorService.findById(1L))
+                .thenReturn(Optional.of(getSingleAuthorDTO(1L)));
 
         //when
         mockMvc.perform(
-                delete("/boards/" + boardId)
+                delete("/authors/" + authorId)
         )
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    @DisplayName("DELETE a Board by Id and return 404 HTTP Not Found")
-    public void givenBoardId_whenDELETEbyId_thenBoardNotFound() throws Exception {
+    @DisplayName("DELETE an Author by Id and return 404 HTTP Not Found")
+    public void givenAuthorId_whenDELETEbyId_thenAuthorNotFound() throws Exception {
         //given
-        Long boardId = 1L;
-        when(boardService.findById(1L))
+        Long authorId = 1L;
+        when(authorService.findById(1L))
                 .thenReturn(Optional.empty());
 
         //when
         mockMvc.perform(
-                delete("/boards/" + boardId)
+                delete("/authors/" + authorId)
         )
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    @DisplayName("PUT a Board by Id to update it")
-    public void givenIdAndUpdatedBoard_whenPUTUpdate_thenBoardIsUpdated() throws Exception {
+    @DisplayName("PUT an Author by Id to update it")
+    public void givenIdAndUpdatedAuthor_whenPUTUpdate_thenAuthorIsUpdated() throws Exception {
         //given
-        Long boardId = 1L;
-        BoardDTO boardDTO = getSingleBoardDTO(1L, 5L);
+        Long authorId = 1L;
+        AuthorDTO authorDTO = getSingleAuthorDTO(1L);
 
-        when(boardService.findById(1L))
-                .thenReturn(Optional.of(boardDTO));
+        when(authorService.findById(1L))
+                .thenReturn(Optional.of(authorDTO));
 
-        BoardDTO updatedBoard = boardDTO;
-        updatedBoard.setTitle("New Title");
-        updatedBoard.setNoticeList(getNoticeListDTO(10L));
+        AuthorDTO updatedAuthor = authorDTO;
+        updatedAuthor.setFirstName("New First Name");
+        updatedAuthor.setLastName("New Last Name");
 
         //when
         mockMvc.perform(
-                put("/boards/" + boardId)
+                put("/authors/" + authorId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(updatedBoard))
+                        .content(asJsonString(updatedAuthor))
                         .characterEncoding("utf-8")
         )
                 .andDo(print())
@@ -184,20 +188,24 @@ public class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("PUT a Board by Id to update it and return 404 HTTP Not Found")
-    public void givenIdAndUpdatedBoard_whenPUTUpdate_thenBoardNotFound() throws Exception {
+    @DisplayName("PUT an Author by Id to update it and return 404 HTTP Not Found")
+    public void givenIdAndUpdatedAuthor_whenPUTUpdate_thenAuthorNotFound() throws Exception {
         //given
-        Long boardId = 1L;
-        BoardDTO boardDTO = getSingleBoardDTO(1L, 5L);
+        Long authorId = 1L;
+        AuthorDTO authorDTO = getSingleAuthorDTO(1L);
 
-        when(boardService.findById(1L))
+        when(authorService.findById(1L))
                 .thenReturn(Optional.empty());
+
+        AuthorDTO updatedAuthor = authorDTO;
+        updatedAuthor.setFirstName("New First Name");
+        updatedAuthor.setLastName("New Last Name");
 
         //when
         mockMvc.perform(
-                put("/boards/" + boardId)
+                put("/authors/" + authorId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(boardDTO))
+                        .content(asJsonString(updatedAuthor))
                         .characterEncoding("utf-8")
         )
                 .andDo(print())

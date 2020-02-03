@@ -12,16 +12,16 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 
-@DisplayName("Integration Tests of the Board CRUD REST endpoints")
-public class BoardControllerITCase extends CrudControllerITCase {
+@DisplayName("Integration Tests of the Author CRUD REST endpoints")
+public class AuthorControllerITCase extends CrudControllerITCase {
 
     @Test
-    @DisplayName("GET a list with 5 Boards")
-    public void whenGETfindAll_thenGetListOf5Boards() {
+    @DisplayName("GET a list with 5 Authors")
+    public void whenGETfindAll_thenGetListOf5Authors() {
         //when
         ValidatableResponse response = given()
                 .when()
-                .get( baseURL + "/boards/")
+                .get( baseURL + "/authors/")
 
                 .prettyPeek()
                 .then();
@@ -29,19 +29,19 @@ public class BoardControllerITCase extends CrudControllerITCase {
         //then
         response.statusCode(HttpStatus.OK.value())
                 .contentType("application/json")
-                .body("size()", greaterThanOrEqualTo(4));
+                .body("size()", greaterThanOrEqualTo(2));
     }
 
     @Test
-    @DisplayName("GET a Board by Id")
-    public void givenBoardId_thenGetSingleBoard() {
+    @DisplayName("GET an Author by Id")
+    public void givenAuthorId_thenGetSingleAuthor() {
         //given
-        Long boardId = 2L;
+        Long authorId = 2L;
 
         //when
         ValidatableResponse response = given()
                 .when()
-                .get(baseURL + "/boards/" + boardId)
+                .get(baseURL + "/authors/" + authorId)
 
                 .prettyPeek()
                 .then();
@@ -50,27 +50,23 @@ public class BoardControllerITCase extends CrudControllerITCase {
         response.statusCode(HttpStatus.OK.value())
                 .contentType("application/json")
                 .body("id", equalTo(2))
-                .body("title", equalTo("Board 2 title"))
-                .body("noticeList[0].id", equalTo(4))
-                .body("noticeList[0].title", equalTo("Notice 4 title"))
-                .body("noticeList[0].description", equalTo("Notice 4 description"))
-                .body("noticeList[0].author.firstName", equalTo("John"))
-                .body("noticeList[0].author.lastName", equalTo("Doe"));
+                .body("firstName", equalTo("Jane"))
+                .body("lastName", equalTo("Doe"));
     }
 
     @Test
-    @DisplayName("POST a Board to create it")
-    public void givenBoard_whenPOSTSave_thenGetSavedBoard(){
+    @DisplayName("POST an Author to create it")
+    public void givenAuthor_whenPOSTSave_thenGetSavedAuthor(){
         //given
-        JsonObject boardJson = TestDataProvider.getBoardJson();
+        JsonObject authorJson = TestDataProvider.getAuthorJson();
 
         //when
         ValidatableResponse response = given()
                 .contentType("application/json")
-                .body(boardJson.toString())
+                .body(authorJson.toString())
 
                 .when()
-                .post(baseURL + "/boards/")
+                .post(baseURL + "/authors/")
 
                 .prettyPeek()
                 .then();
@@ -78,24 +74,22 @@ public class BoardControllerITCase extends CrudControllerITCase {
         //then
         response.statusCode(HttpStatus.CREATED.value())
                 .body("id", notNullValue())
-                .body("title", equalTo("Board TEST title"))
-                .body("noticeList[0].id",  notNullValue())
-                .body("noticeList[0].title", equalTo("Notice TEST title"))
-                .body("noticeList[0].description", equalTo("Notice TEST description"));
+                .body("firstName", equalTo("John"))
+                .body("lastName", equalTo("Snow"));
     }
 
     @Test
-    @DisplayName("DELETE a Board by Id")
-    public void givenBoardId_whenDELETEbyId_thenBoardIsDeleted() {
+    @DisplayName("DELETE an Author by Id")
+    public void givenAuthorId_whenDELETEbyId_thenAuthorIsDeleted() {
         //given
-        Long boardId = 3L;
+        Long authorId = 3L;
 
         //when
         ValidatableResponse response = given()
                 .contentType("application/json")
 
                 .when()
-                .delete(baseURL + "/boards/" + boardId)
+                .delete(baseURL + "/authors/" + authorId)
 
                 .prettyPeek()
                 .then();
@@ -104,19 +98,19 @@ public class BoardControllerITCase extends CrudControllerITCase {
     }
 
     @Test
-    @DisplayName("PUT a Board by Id to update it")
-    public void givenIdAndUpdatedBoard_whenPUTUpdate_thenBoardIsUpdated() {
+    @DisplayName("PUT an Author by Id to update it")
+    public void givenIdAndUpdatedAuthor_whenPUTUpdate_thenAuthorIsUpdated() {
         //given
-        Long boardId = 4L;
-        JsonObject boardJson = TestDataProvider.getBoardJson();
+        Long authorId = 3L;
+        JsonObject authorJson = TestDataProvider.getAuthorJson();
 
         //when
         ValidatableResponse response = given()
                 .contentType("application/json")
-                .body(boardJson.toString())
+                .body(authorJson.toString())
 
                 .when()
-                .put(baseURL + "/boards/" + boardId)
+                .put(baseURL + "/authors/" + authorId)
 
                 .prettyPeek()
                 .then();

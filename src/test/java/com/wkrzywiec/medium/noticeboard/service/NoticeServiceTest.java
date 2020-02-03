@@ -134,13 +134,13 @@ public class NoticeServiceTest {
         when(noticeRepository.save(any(Notice.class)))
                 .thenReturn(getSingleNotice(2L));
 
-        NoticeDTO afterUpdeNoticeDTO = getSingleNoticeDTO(2L);
+        NoticeDTO toBeUpdatedNoticeDTO = getSingleNoticeDTO(2L);
 
         //when
-        NoticeDTO updatedNoticeDTO = noticeService.update(1L, afterUpdeNoticeDTO);
+        NoticeDTO updatedNoticeDTO = noticeService.update(1L, toBeUpdatedNoticeDTO);
 
         //then
-        assertEquals(afterUpdeNoticeDTO.getTitle(), updatedNoticeDTO.getTitle());
-        assertEquals(afterUpdeNoticeDTO.getDescription(), updatedNoticeDTO.getDescription());
+        assertEquals(toBeUpdatedNoticeDTO.getTitle(), updatedNoticeDTO.getTitle());
+        assertEquals(toBeUpdatedNoticeDTO.getDescription(), updatedNoticeDTO.getDescription());
     }
 }

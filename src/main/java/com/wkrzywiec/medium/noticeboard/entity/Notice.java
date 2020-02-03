@@ -24,6 +24,6 @@ public class Notice extends BaseEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "person_id")
-    private Person person;
+    @JoinColumn(name = "author_id")
+    private Author author;
 }

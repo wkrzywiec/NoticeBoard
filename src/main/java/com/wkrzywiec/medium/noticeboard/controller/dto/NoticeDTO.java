@@ -21,5 +21,5 @@ public class NoticeDTO extends BaseDTO {
     private String description;
 
     @ApiModelProperty(value = "A Person who created this Notice")
-    private PersonDTO person;
+    private AuthorDTO author;
 }

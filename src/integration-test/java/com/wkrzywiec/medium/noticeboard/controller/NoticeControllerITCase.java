@@ -52,9 +52,9 @@ public class NoticeControllerITCase extends CrudControllerITCase {
                 .body("id", equalTo(1))
                 .body("title", equalTo("Notice 1 title"))
                 .body("description", equalTo("Notice 1 description"))
-                .body("person.id", equalTo(1))
-                .body("person.firstName", equalTo("John"))
-                .body("person.lastName", equalTo("Doe"));
+                .body("author.id", equalTo(1))
+                .body("author.firstName", equalTo("John"))
+                .body("author.lastName", equalTo("Doe"));
     }
 
     @Test
