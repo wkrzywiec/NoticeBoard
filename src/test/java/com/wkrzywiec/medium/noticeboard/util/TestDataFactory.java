@@ -1,7 +1,9 @@
 package com.wkrzywiec.medium.noticeboard.util;
 
+import com.wkrzywiec.medium.noticeboard.controller.dto.AuthorDTO;
 import com.wkrzywiec.medium.noticeboard.controller.dto.BoardDTO;
 import com.wkrzywiec.medium.noticeboard.controller.dto.NoticeDTO;
+import com.wkrzywiec.medium.noticeboard.entity.Author;
 import com.wkrzywiec.medium.noticeboard.entity.Board;
 import com.wkrzywiec.medium.noticeboard.entity.Notice;
 
@@ -63,6 +65,34 @@ public class TestDataFactory {
     public static List<BoardDTO> getBoardListDTO(Long boardsCount, Long noticesCount){
         return LongStream.rangeClosed(1, boardsCount)
                 .mapToObj(id -> getSingleBoardDTO(id, noticesCount))
+                .collect(Collectors.toList());
+    }
+
+    public static Author getSingleAuthor(Long id){
+        return Author.builder()
+                .id(id)
+                .firstName("First Name " + id)
+                .lastName("Last Name " + id)
+                .build();
+    }
+
+    public static List<Author> getAuthorList(Long authorsCount){
+        return LongStream.rangeClosed(1, authorsCount)
+                .mapToObj(id -> getSingleAuthor(id))
+                .collect(Collectors.toList());
+    }
+
+    public static AuthorDTO getSingleAuthorDTO(Long id){
+        return AuthorDTO.builder()
+                .id(id)
+                .firstName("First Name " + id)
+                .lastName("Last Name " + id)
+                .build();
+    }
+
+    public static List<AuthorDTO> getAuthorListDTO(Long authorsCount){
+        return LongStream.rangeClosed(1, authorsCount)
+                .mapToObj(id -> getSingleAuthorDTO(id))
                 .collect(Collectors.toList());
     }
 }

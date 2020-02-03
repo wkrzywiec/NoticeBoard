@@ -134,13 +134,13 @@ public class BoardServiceTest {
         when(boardRepository.save(any(Board.class)))
                 .thenReturn(getSingleBoard(2L, 5L));
 
-        BoardDTO afterUpdateBoardDTO = getSingleBoardDTO(2L, 5L);
+        BoardDTO toBeUpdatedBoardDTO = getSingleBoardDTO(2L, 5L);
 
         //when
-        BoardDTO updatedBoardDTO = boardService.update(1L, afterUpdateBoardDTO);
+        BoardDTO updatedBoardDTO = boardService.update(1L, toBeUpdatedBoardDTO);
 
         //then
-        assertEquals(afterUpdateBoardDTO.getTitle(), updatedBoardDTO.getTitle());
+        assertEquals(toBeUpdatedBoardDTO.getTitle(), updatedBoardDTO.getTitle());
         assertEquals(5L, updatedBoardDTO.getNoticeList().size());
     }
 }

@@ -12,7 +12,6 @@ import java.util.Optional;
 
 import static com.wkrzywiec.medium.noticeboard.mapper.BoardMapper.INSTANCE;
 
-
 @Service
 @RequiredArgsConstructor
 public class BoardService implements CrudService<BoardDTO> {
