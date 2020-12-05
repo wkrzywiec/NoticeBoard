@@ -73,6 +73,7 @@ public class AuthorControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("[0].firstName").value("First Name 1"))
                 .andExpect(jsonPath("[0].lastName").value("Last Name 1"));
+                
     }
 
     @Test
