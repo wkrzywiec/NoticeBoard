@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ApplicationTests {
 
 	@Test
-	@DisplayName("Test Spring test context loading now")
+	@DisplayName("Test Spring test context loading")
 	void contextLoads() {
 	}
 
