@@ -18,7 +18,7 @@ An application expose 5 REST endpoints for each entity. For example *Notice* (an
 
 If you run this application locally the `{baseUrl}` would be `http://localhost:8080`. 
 
-All available endpoints are listed on *Swagger UI* page which can be entered, when application is running, under *http://localhost:8080/swagger-ui.html* URL.
+All available endpoint are listed on *Swagger UI* page which can be entered, when application is running, under *http://localhost:8080/swagger-ui.html* URL.
 
 ![endpoints](https://github.com/wkrzywiec/NoticeBoard/blob/master/pics/notice-endpoints.png)
 
