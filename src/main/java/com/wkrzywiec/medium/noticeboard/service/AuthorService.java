@@ -16,7 +16,7 @@ import static com.wkrzywiec.medium.noticeboard.mapper.AuthorMapper.INSTANCE;
 @Service
 @RequiredArgsConstructor
 public class AuthorService implements CrudService<AuthorDTO> {
-
+    @Autowired
     private final AuthorRepository authorRepository;
 
     @Override
@@ -27,9 +27,14 @@ public class AuthorService implements CrudService<AuthorDTO> {
     }
 
     @Override
-    public Optional<AuthorDTO> findById(Long id) {
-        Optional<Author> authorOptional = authorRepository.findById(id);
-        return authorOptional.map(AuthorMapper.INSTANCE::authorToDto);
+    public AuthorDTO findById(Long id) {
+        try{
+        Author authorOptional = authorRepository.findById(id).get();
+        }
+        catch(Exception ex){
+                System.out.println("Author Not Found With this id");
+        }
+            return authorOptional.map(AuthorMapper.INSTANCE::authorToDto);
     }
 
     @Override
@@ -40,7 +45,13 @@ public class AuthorService implements CrudService<AuthorDTO> {
 
     @Override
     public void delete(Long id) {
+        try{
         authorRepository.deleteById(id);
+        }
+        catch(Exception ex){
+        System.out.println("Author Not Found With this id");
+        }
+    
     }
 
     @Override
