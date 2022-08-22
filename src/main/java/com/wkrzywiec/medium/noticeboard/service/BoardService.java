@@ -15,7 +15,7 @@ import static com.wkrzywiec.medium.noticeboard.mapper.BoardMapper.INSTANCE;
 @Service
 @RequiredArgsConstructor
 public class BoardService implements CrudService<BoardDTO> {
-
+    @Autowired //Good Practice
     private final BoardRepository boardRepository;
 
     @Override
@@ -26,9 +26,14 @@ public class BoardService implements CrudService<BoardDTO> {
     }
 
     @Override
-    public Optional<BoardDTO> findById(Long id) {
-        Optional<Board> boardOptional = boardRepository.findById(id);
-        return boardOptional.map(INSTANCE::boardToDto);
+    public BoardDTO findById(Long id) {
+        try{
+       Board boardOptional = boardRepository.findById(id).get();
+        }
+        catch(Exception ex){
+        System.out.println("Cannot find Board with this Id");
+        }
+            return boardOptional.map(INSTANCE::boardToDto);
     }
 
     @Override
@@ -39,7 +44,14 @@ public class BoardService implements CrudService<BoardDTO> {
 
     @Override
     public void delete(Long id) {
-        boardRepository.deleteById(id);
+        try{
+       boardRepository.deleteById(id);
+        }
+        catch(Exception ex){
+        System.out.println("Cannot find Board with this Id");
+        }
+        
+        
     }
 
     @Override
